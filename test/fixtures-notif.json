@@ -1,0 +1,117 @@
+{
+  "data": {
+    "viewer_v2": {
+      "user_results": {
+        "result": {
+          "__typename": "User",
+          "rest_id": "1",
+          "core": {"screen_name": "me", "name": "Me"},
+          "legacy": {"followers_count": 1, "friends_count": 1, "description": "x", "statuses_count": 1},
+          "notification_timeline": {
+            "timeline": {
+              "instructions": [
+                {
+                  "type": "TimelineAddEntries",
+                  "entries": [
+                    {
+                      "entryId": "notification-abc",
+                      "content": {
+                        "entryType": "TimelineTimelineItem",
+                        "__typename": "TimelineTimelineItem",
+                        "clientEventInfo": {"element": "users_liked_your_tweet"},
+                        "itemContent": {
+                          "__typename": "TimelineNotification",
+                          "id": "abc",
+                          "notification_icon": "heart_icon",
+                          "rich_message": {"text": "Alice liked your post", "entities": []},
+                          "template": {
+                            "from_users": [{
+                              "user_results": {
+                                "result": {
+                                  "__typename": "User",
+                                  "core": {"screen_name": "alice", "name": "Alice"}
+                                }
+                              }
+                            }]
+                          },
+                          "timestamp_ms": "1700000000000"
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "tweet-999",
+                      "content": {
+                        "entryType": "TimelineTimelineItem",
+                        "itemContent": {
+                          "__typename": "TimelineTweet",
+                          "tweet_results": {
+                            "result": {
+                              "__typename": "Tweet",
+                              "rest_id": "999",
+                              "core": {
+                                "user_results": {
+                                  "result": {
+                                    "core": {"screen_name": "bob", "name": "Bob"}
+                                  }
+                                }
+                              },
+                              "legacy": {
+                                "full_text": "reply",
+                                "in_reply_to_status_id_str": "1",
+                                "created_at": "Tue Apr 14 06:58:00 +0000 2026"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "entryId": "notification-quote1",
+                      "content": {
+                        "itemContent": {
+                          "__typename": "TimelineNotification",
+                          "id": "q1",
+                          "notification_icon": "quote_icon",
+                          "rich_message": {"text": "Carol quoted your post"},
+                          "template": {
+                            "aggregate_user_actions_v1": {
+                              "from_users": [{
+                                "user_results": {
+                                  "result": {"core": {"screen_name": "carol"}}
+                                }
+                              }]
+                            }
+                          }
+                        },
+                        "clientEventInfo": {"element": "user_quoted_your_tweet"}
+                      }
+                    },
+                    {
+                      "entryId": "notification-reply-bubble",
+                      "content": {
+                        "itemContent": {
+                          "__typename": "TimelineNotification",
+                          "id": "r1",
+                          "notification_icon": "conversation_bubble_icon",
+                          "rich_message": {"text": "Dave replied"},
+                          "template": {
+                            "from_users": [{
+                              "user_results": {
+                                "result": {"core": {"screen_name": "dave"}}
+                              }
+                            }]
+                          }
+                        },
+                        "clientEventInfo": {"element": "user_replied_to_your_tweet"}
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

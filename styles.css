@@ -1,0 +1,151 @@
+.x-oneway-highlight {
+  outline: 2px solid #ff8c00 !important;
+  outline-offset: -2px;
+  background: rgba(255, 140, 0, 0.12) !important;
+  border-radius: 12px;
+}
+
+.x-oneway-highlight-blue {
+  outline: 2px solid #1d9bf0 !important;
+  outline-offset: -2px;
+  background: rgba(29, 155, 240, 0.14) !important;
+  border-radius: 12px;
+}
+
+.x-oneway-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  color: #111;
+  background: #ff8c00;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.x-oneway-badge-blue {
+  color: #fff;
+  background: #1d9bf0;
+}
+
+.x-oneway-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 999999;
+  max-width: 280px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #111;
+  color: #fff;
+  font: 13px/1.4 system-ui, -apple-system, sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.x-oneway-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 互动次数：灰绿胶囊；「暂无」提高对比度，避免虚到看不见 */
+.x-oneway-ix {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  color: #fff;
+  background: #5f8f7a;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: help;
+  flex-shrink: 0;
+}
+
+.x-oneway-ix-none {
+  color: #536471;
+  background: rgba(83, 100, 113, 0.14);
+  border: 1.5px dashed #788692;
+  font-weight: 700;
+  line-height: 14px;
+}
+
+/* 暗色 / 深蓝灰主题下「暂无」仍可读 */
+@media (prefers-color-scheme: dark) {
+  .x-oneway-ix-none {
+    color: #cfd9de;
+    background: rgba(207, 217, 222, 0.14);
+    border-color: #8b98a5;
+  }
+}
+
+/* 1.6.0：被互动 / 我互动 两个胶囊 */
+.x-oneway-ixwrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: help;
+}
+.x-oneway-ixwrap .x-oneway-ix { margin-left: 0; }
+.x-oneway-ix-in { background: #5f8f7a; color: #fff; }
+.x-oneway-ix-out { background: #6f63c9; color: #fff; }
+.x-oneway-ix-zero {
+  color: #536471;
+  background: transparent;
+  border: 1px solid rgba(83, 100, 113, 0.45);
+  line-height: 14px;
+  font-weight: 600;
+}
+@media (prefers-color-scheme: dark) {
+  .x-oneway-ix-zero { color: #aab8c2; border-color: rgba(170, 184, 194, 0.5); }
+}
+
+/* 1.7.1：时间线一键关注（深色底白字小胶囊，和「暂无」区分开） */
+.x-oneway-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 2px 0 0;
+  padding: 1px 9px;
+  border-radius: 999px;
+  border: 1px solid #0f1419;
+  background: #0f1419;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  cursor: pointer;
+  vertical-align: middle;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+.x-oneway-follow-btn:hover { background: #272c30; border-color: #272c30; }
+.x-oneway-follow-btn:disabled { opacity: 0.7; cursor: wait; }
+.x-oneway-follow-btn.done {
+  background: transparent;
+  border-color: #788692;
+  color: #536471;
+  box-shadow: none;
+  cursor: default;
+}
+@media (prefers-color-scheme: dark) {
+  .x-oneway-follow-btn { background: #eff3f4; border-color: #eff3f4; color: #0f1419; }
+  .x-oneway-follow-btn:hover { background: #d7dbdc; border-color: #d7dbdc; }
+  .x-oneway-follow-btn.done { background: transparent; color: #aab8c2; border-color: #8b98a5; }
+}

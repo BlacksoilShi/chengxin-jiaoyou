@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>诚信浇友</title>
+  <style>
+    body {
+      margin: 0;
+      width: 340px;
+      font: 13px/1.4 system-ui, -apple-system, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+    .wrap { padding: 12px; }
+    h1 { margin: 0 0 8px; font-size: 14px; }
+    p { margin: 0 0 8px; color: #555; }
+    ul { margin: 0 0 10px; padding-left: 18px; color: #555; }
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 10px;
+      background: #1d9bf0;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(0.97); }
+    button.secondary { background: #eef1f3; color: #b42318; margin-top: 6px; }
+    button.ghost { background: #f7f9f9; color: #0f1419; margin-top: 6px; }
+    button.sync { background: #5f8f7a; margin-top: 6px; }
+    .meta { margin-top: 10px; color: #666; font-size: 12px; }
+    label { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+    hr { border: 0; border-top: 1px solid #eee; margin: 10px 0; }
+    .ix { color: #5f8f7a; font-weight: 700; }
+    .ox { color: #6f63c9; font-weight: 700; }
+    button.oxsync { background: #6f63c9; margin-top: 6px; }
+    .tag-out { color: #6f63c9; font-weight: 700; }
+    .note { color: #888; font-size: 11px; margin-top: 4px; }
+    .acct {
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 8px;
+      background: #f0f7f4;
+      color: #0f1419;
+      font-size: 12px;
+    }
+    .acct b { color: #1d9bf0; }
+    .dbg {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      background: #f7f9f9;
+      color: #536471;
+      font-size: 11px;
+      max-height: 160px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .dbg b { color: #0f1419; }
+    .tag-reply { color: #1d9bf0; font-weight: 700; }
+    .tag-like { color: #f91880; font-weight: 700; }
+    .tag-quote { color: #7856ff; font-weight: 700; }
+    .tag-thread { color: #00a3a3; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>诚信浇友 <span style="color:#888;font-weight:500">v1.7.1</span></h1>
+    <div style="color:#888;font-size:11px;margin:-4px 0 6px">Honest Mutuals · X 关注与互动标注</div>
+    <ul>
+      <li>正在关注：橙色「未回关」</li>
+      <li>关注者：蓝色「蓝V待回关」</li>
+      <li>列表 + 时间线：<span class="ix">被互动 N</span> <span class="ox">我互动 N</span>（时间线简写「被 / 我」，悬停看分项）</li>
+      <li>时间线未关注作者：可点「关注」一键关注（popup 可关）</li>
+    </ul>
+    <label>
+      <input type="checkbox" id="autoScan" checked />
+      进入列表页自动扫描
+    </label>
+    <label>
+      <input type="checkbox" id="showInbound" checked />
+      显示<span class="ix">被互动</span>（别人对你）
+    </label>
+    <label>
+      <input type="checkbox" id="showOutbound" checked />
+      显示<span class="ox">我互动</span>（你对别人）
+    </label>
+    <label>
+      <input type="checkbox" id="showQuickFollow" checked />
+      时间线显示「关注」按钮（未关注作者 · 仅点击时关注）
+    </label>
+    <div class="note">顺序：关注 → 被互动 → 我互动。不自动批量关注；列表页已有原生按钮则不重复插入。</div>
+    <button id="scan">扫描本页</button>
+    <hr />
+    <div class="acct" id="acctBox">当前账号：检测中…</div>
+    <div class="note">被互动 = 对方对你的：<span class="tag-reply">评你的帖</span>（回复你的原帖）/ <span class="tag-thread">回你的楼</span>（回复你的回复）/ <span class="tag-quote">引用你</span> / <span class="tag-like">点赞你</span>。你主动评论别人<strong>不计</strong>。<br/>来源：进通知页<strong>温和同步</strong>（约 3 秒/页，单次 ≤15 页，30 分钟冷却，离开即停）+ 打开你自己的帖子时被动记录回复。按登录账号分库。</div>
+    <button id="syncNow" class="sync">温和同步通知（较慢）</button>
+    <div class="note" style="margin-top:8px">我互动 = 你对对方的：<span class="tag-out">我回复 / 我点赞 / 我转帖 / 我引用</span>。<br/>来源：装上后你在网页上操作成功即<strong>实时记</strong>；浏览时页面已加载的推文（你点过赞/转过、你发的回复）被动补记。历史需在<strong>你自己的「喜欢」或「回复」页</strong>手动点下面按钮（≤10 页，约 3 秒/页，10 分钟内只能一次），且不全。</div>
+    <button id="oxSyncNow" class="oxsync">同步我的互动（手动·较慢）</button>
+    <button id="clearIx" class="secondary">清空本账号互动数据（被+我）</button>
+    <button id="refreshDbg" class="ghost">刷新捕获状态</button>
+    <div class="dbg" id="dbgBox">捕获状态：打开 x.com/notifications 将温和同步；打开你自己的帖子会记录回复。</div>
+    <div class="meta" id="status">就绪</div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
