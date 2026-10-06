@@ -4,6 +4,14 @@
 
 Chrome / Edge（Chromium 111+）通用 Manifest V3 扩展。
 
+## 打赏支持
+
+如果这个扩展帮到你，欢迎微信扫码请杯咖啡（可选）：
+
+<p align="center">
+  <img src="docs/wechat-tip.jpg" alt="微信赞赏码" width="280" />
+</p>
+
 ## 功能
 
 1. **正在关注**（`/following`）：高亮「我已关注、对方未回关」→ 橙色「未回关」
