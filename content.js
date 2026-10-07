@@ -3,6 +3,32 @@
   const FOLLOW_RE = /^(follow|follow back|回关|关注)$/i;
   const CTRL_TAG = 'x-oneway-ix/ctrl';
 
+  function t(key, substitutions) {
+    try {
+      const msg = chrome.i18n.getMessage(key, substitutions == null ? undefined : substitutions);
+      return msg || key;
+    } catch (_) {
+      return key;
+    }
+  }
+
+  // MAIN-world inject 无 chrome.i18n：把 UI 文案包经 postMessage 下发
+  const INJECT_I18N_KEYS = [
+    'inj_follow_too_fast', 'inj_follow_rate', 'inj_bad_user', 'inj_follow_self',
+    'inj_already_following', 'inj_no_auth', 'inj_rate_429', 'inj_relogin',
+    'inj_follow_ok', 'inj_follow_fail_status', 'inj_ox_busy', 'inj_ox_need_page',
+    'inj_ox_cooldown', 'inj_ox_no_tpl', 'inj_ox_no_headers', 'inj_ox_left',
+    'inj_ox_done_detail', 'inj_err_429', 'inj_err_auth', 'inj_err_pull',
+    'inj_sync_busy', 'inj_sync_notif_only', 'inj_sync_cd_auto', 'inj_sync_cd_manual',
+    'inj_sync_left_cancel', 'inj_sync_no_headers', 'inj_sync_aborted',
+    'inj_sync_capped', 'inj_sync_done', 'inj_sync_empty', 'toast_ox_done'
+  ];
+  function buildI18nPack() {
+    const pack = {};
+    for (const k of INJECT_I18N_KEYS) pack[k] = t(k);
+    return pack;
+  }
+
   let scanTimer = null;
   let observer = null;
   let autoScan = true;
@@ -138,7 +164,7 @@
 
   function ensureBadge(cell, kind) {
     const existing = cell.querySelector('.x-oneway-badge');
-    const text = kind === 'blue-pending' ? '蓝V待回关' : '未回关';
+    const text = kind === 'blue-pending' ? t('badge_blue') : t('badge_oneway');
     const cls = kind === 'blue-pending' ? 'x-oneway-badge x-oneway-badge-blue' : 'x-oneway-badge';
     if (existing) {
       existing.className = cls;
@@ -167,7 +193,7 @@
     const want = kind === 'blue-pending' ? 'x-oneway-highlight-blue' : 'x-oneway-highlight';
     const other = kind === 'blue-pending' ? 'x-oneway-highlight' : 'x-oneway-highlight-blue';
     const badge = cell.querySelector('.x-oneway-badge');
-    const text = kind === 'blue-pending' ? '蓝V待回关' : '未回关';
+    const text = kind === 'blue-pending' ? t('badge_blue') : t('badge_oneway');
     if (cell.classList.contains(want) && !cell.classList.contains(other) && badge && badge.textContent === text) return;
     clearMark(cell);
     cell.classList.add(want);
@@ -195,18 +221,22 @@
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
 
-  const IN_PARTS = [
-    ['replies', '评你的帖'],
-    ['threadReplies', '回你的楼'],
-    ['quotes', '引用你'],
-    ['likes', '点赞你']
-  ];
-  const OUT_PARTS = [
-    ['replies', '我回复'],
-    ['likes', '我点赞'],
-    ['retweets', '我转帖'],
-    ['quotes', '我引用']
-  ];
+  function IN_PARTS() {
+    return [
+      ['replies', t('act_reply')],
+      ['threadReplies', t('act_thread_reply')],
+      ['quotes', t('act_quote')],
+      ['likes', t('act_like')]
+    ];
+  }
+  function OUT_PARTS() {
+    return [
+      ['replies', t('act_out_reply')],
+      ['likes', t('act_out_like')],
+      ['retweets', t('act_out_retweet')],
+      ['quotes', t('act_out_quote')]
+    ];
+  }
 
   function inTotal(rec) {
     if (!rec) return 0;
@@ -223,29 +253,29 @@
     const lines = [];
     if (showInbound) {
       const n = inTotal(inRec);
-      lines.push(`【被互动 ${n}】@${user} 对你`);
+      lines.push(t('tip_in_header', [String(n), user]));
       if (n > 0) {
-        lines.push('  ' + IN_PARTS.map(([f, l]) => `${l} ${inRec[f] || 0}`).join(' · '));
+        lines.push('  ' + IN_PARTS().map(([f, l]) => t('tip_part', [l, String(inRec[f] || 0)])).join(' · '));
         const extra = [];
-        if (inRec.retweets) extra.push(`转帖你 ${inRec.retweets}`);
-        if (inRec.mentions) extra.push(`提及你 ${inRec.mentions}`);
+        if (inRec.retweets) extra.push(t('tip_retweet_you', [String(inRec.retweets)]));
+        if (inRec.mentions) extra.push(t('tip_mention_you', [String(inRec.mentions)]));
         if (extra.length) lines.push('  ' + extra.join(' · '));
-        lines.push(`  最近：${fmtDateTime(inRec.lastAt)}`);
+        lines.push('  ' + t('tip_recent', [fmtDateTime(inRec.lastAt)]));
       } else {
-        lines.push('  暂无（进通知页温和同步 / 打开你的帖子累计）');
+        lines.push(t('tip_in_empty'));
       }
     }
     if (showOutbound) {
       const n = outTotal(outRec);
-      lines.push(`【我互动 ${n}】你对 @${user}`);
+      lines.push(t('tip_out_header', [String(n), user]));
       if (n > 0) {
-        lines.push('  ' + OUT_PARTS.map(([f, l]) => `${l} ${outRec[f] || 0}`).join(' · '));
-        lines.push(`  最近：${fmtDateTime(outRec.lastAt)}`);
+        lines.push('  ' + OUT_PARTS().map(([f, l]) => t('tip_part', [l, String(outRec[f] || 0)])).join(' · '));
+        lines.push('  ' + t('tip_recent', [fmtDateTime(outRec.lastAt)]));
       } else {
-        lines.push('  暂无（安装后你回复/点赞/转帖/引用会实时记；历史可在你的喜欢/回复页手动同步）');
+        lines.push(t('tip_out_empty'));
       }
     }
-    lines.push(`（账号 @${activeAccount || '?'} · 仅本机累计）`);
+    lines.push(t('tip_account', [activeAccount || '?']));
     return lines.join('\n');
   }
 
@@ -261,19 +291,19 @@
     const pills = [];
     if (inN === 0 && outN === 0) {
       let text;
-      if (showInbound && showOutbound) text = compact ? '暂无' : '暂无互动';
-      else text = showInbound ? '被·暂无' : '我·暂无';
+      if (showInbound && showOutbound) text = compact ? t('pill_none_short') : t('pill_none');
+      else text = showInbound ? t('pill_in_none') : t('pill_out_none');
       pills.push({ text, cls: 'x-oneway-ix x-oneway-ix-none' });
     } else {
       if (showInbound) {
         pills.push({
-          text: compact ? `被 ${inN}` : `被互动 ${inN}`,
+          text: compact ? t('pill_in_short', [String(inN)]) : t('pill_in', [String(inN)]),
           cls: inN > 0 ? 'x-oneway-ix x-oneway-ix-in' : 'x-oneway-ix x-oneway-ix-in x-oneway-ix-zero'
         });
       }
       if (showOutbound) {
         pills.push({
-          text: compact ? `我 ${outN}` : `我互动 ${outN}`,
+          text: compact ? t('pill_out_short', [String(outN)]) : t('pill_out', [String(outN)]),
           cls: outN > 0 ? 'x-oneway-ix x-oneway-ix-out' : 'x-oneway-ix x-oneway-ix-out x-oneway-ix-zero'
         });
       }
@@ -380,9 +410,9 @@
           btn.disabled = true;
           btn.dataset.busy = '1';
         } else {
-          btn.textContent = '关注';
+          btn.textContent = t('btn_follow');
         }
-        btn.title = `关注 @${user}（诚信浇友 · 仅你点击时关注）`;
+        btn.title = t('btn_follow_title', [user]);
         btn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -399,7 +429,7 @@
         }
         el.title = view.title;
       } else {
-        el.title = `关注 @${user}`;
+        el.title = t('btn_follow_title_short', [user]);
       }
       el.dataset.sig = sig;
     } else if (view) {
@@ -519,9 +549,9 @@
     }
 
     if (reason === 'manual') {
-      if (isListPage() && isFollowersPage()) toast(`蓝V待回关 ${bluePending} / ${checked}`);
-      else if (isListPage()) toast(`未回关 ${oneWayOut} / ${checked}`);
-      else toast(`已标注帖子 ${ixTweet}`);
+      if (isListPage() && isFollowersPage()) toast(t('toast_scan_blue', [String(bluePending), String(checked)]));
+      else if (isListPage()) toast(t('toast_scan_oneway', [String(oneWayOut), String(checked)]));
+      else toast(t('toast_scan_tweets', [String(ixTweet)]));
     }
     return {
       ok: true, checked, marked, bluePending, oneWayOut,
@@ -731,6 +761,17 @@
     } catch (_) {}
   }
 
+  function pushI18nToInject() {
+    try {
+      postCtrl({ cmd: 'i18n', pack: buildI18nPack() });
+    } catch (_) {}
+  }
+  pushI18nToInject();
+  // inject may load after content; re-push shortly
+  setTimeout(pushI18nToInject, 800);
+  setTimeout(pushI18nToInject, 2500);
+
+
   function loadAccountMeta(cb) {
     chrome.storage.local.get({ activeAccount: '', accounts: {} }, (res) => {
       activeAccount = (res.activeAccount || '').toLowerCase();
@@ -818,9 +859,9 @@
       }
     }
     if (miss > 0) {
-      toast(`自检：DOM 可见 ${authors.size} 人 · 库中有 ${hit} · 缺 ${miss}${missing.length ? '（如 @' + missing.join(' @') + '）' : ''}`, 4500);
+      toast(t('toast_selfcheck_miss', [String(authors.size), String(hit), String(miss), missing.length ? ' (@' + missing.join(' @') + ')' : '']), 4500);
     } else if (hit > 0) {
-      toast(`自检：本页可见 ${hit} 人互动均已入库`, 2800);
+      toast(t('toast_selfcheck_ok', [String(hit)]), 2800);
     }
   }
 
@@ -836,7 +877,7 @@
   loadAccountMeta(() => {
     chrome.storage.local.get({ migratedToast: false }, (res) => {
       if (res.migratedToast) {
-        toast('已升级：分「被互动 / 我互动」两块；时间线可一键关注（popup 可关）');
+        toast(t('toast_migrated'));
         try { chrome.runtime.sendMessage({ type: 'X_ONEWAY_IX_MIGRATED_ACK' }).catch(() => {}); } catch (_) {}
       }
       if (shouldAutoScan()) scheduleScan();
@@ -877,8 +918,8 @@
     }
     if (msg?.type === 'X_ONEWAY_SYNC_NOW') {
       if (!isNotificationsPage()) {
-        sendResponse({ ok: false, error: '请先打开 x.com/notifications' });
-        toast('请先打开通知页再同步');
+        sendResponse({ ok: false, error: t('err_open_notif') });
+        toast(t('toast_open_notif'));
         return true;
       }
       syncStartedForPath = '';
@@ -890,8 +931,8 @@
       const me = myHandle();
       const m = location.pathname.match(/^\/([A-Za-z0-9_]{1,15})\/(likes|with_replies)\/?$/);
       if (!me || !m || m[1].toLowerCase() !== me) {
-        sendResponse({ ok: false, error: `请先打开 x.com/${me || '你的账号'}/likes 或 /with_replies` });
-        toast('请先打开你自己的「喜欢」或「回复」页再同步我的互动', 3200);
+        sendResponse({ ok: false, error: t('err_open_ox', [me || t('err_open_ox_you')]) });
+        toast(t('toast_open_ox'), 3200);
         return true;
       }
       setTimeout(() => postCtrl({ cmd: 'ox-sync-start' }), 1200 + Math.floor(Math.random() * 800));
@@ -932,18 +973,18 @@
     lastToastAt = now;
     const by = st.byAction || d.byAction || {};
     const parts = [];
-    if (by.reply) parts.push(`评帖${by.reply}`);
-    if (by.thread_reply) parts.push(`回楼${by.thread_reply}`);
-    if (by.quote) parts.push(`引${by.quote}`);
-    if (by.like) parts.push(`赞${by.like}`);
-    if (by.retweet) parts.push(`转${by.retweet}`);
-    if (by.mention) parts.push(`提${by.mention}`);
+    if (by.reply) parts.push(t('toast_short_reply', [String(by.reply)]));
+    if (by.thread_reply) parts.push(t('toast_short_thread', [String(by.thread_reply)]));
+    if (by.quote) parts.push(t('toast_short_quote', [String(by.quote)]));
+    if (by.like) parts.push(t('toast_short_like', [String(by.like)]));
+    if (by.retweet) parts.push(t('toast_short_rt', [String(by.retweet)]));
+    if (by.mention) parts.push(t('toast_short_mention', [String(by.mention)]));
     const mix = parts.length ? ` [${parts.join(' ')}]` : '';
     const op = d.lastOp ? ` · ${d.lastOp}` : '';
     if (parsed > 0 || skipped > 0 || st.instrArrays > 0 || st.rest) {
-      toast(`通知：本批 ${parsed} 条${mix} · 跳过 ${skipped}（累计 ${sessionParsed}）${op}`, 3200);
+      toast(t('toast_notif_batch', [String(parsed), mix, String(skipped), String(sessionParsed), op]), 3200);
     } else if (d.lastOp) {
-      toast(`通知：捕获 ${d.lastOp}，未解析出评/赞/引（instr=${st.instrArrays || 0}）`, 3200);
+      toast(t('toast_notif_empty', [String(d.lastOp), String(st.instrArrays || 0)]), 3200);
     }
   });
 
@@ -977,7 +1018,7 @@
         const btn = wrap.querySelector('.x-oneway-follow-btn');
         if (!btn) continue;
         if (d.ok && d.following) {
-          btn.textContent = '已关注';
+          btn.textContent = t('btn_following');
           btn.classList.add('done');
           btn.disabled = true;
           followCache.set(sn, { following: true, restId: (followCache.get(sn) || {}).restId || '' });
@@ -985,39 +1026,39 @@
         } else {
           btn.dataset.busy = '0';
           btn.disabled = false;
-          btn.textContent = '关注';
-          toast(d.detail || '关注失败', 3200);
+          btn.textContent = t('btn_follow');
+          toast(d.detail || t('toast_follow_fail'), 3200);
         }
       }
-      if (d.ok) toast(d.detail || '关注成功', 1800);
-      else if (!wraps.length) toast(d.detail || '关注失败', 3200);
+      if (d.ok) toast(d.detail || t('toast_follow_ok'), 1800);
+      else if (!wraps.length) toast(d.detail || t('toast_follow_fail'), 3200);
     }
   });
 
   window.addEventListener('x-oneway-ix-sync', (ev) => {
     const d = ev.detail || {};
     if (d.scope === 'outbound') {
-      if (d.kind === 'start') toast('同步我的互动中…（约 3 秒/页，最多 10 页，别切走）', 3000);
-      else if (d.kind === 'progress') toast(`同步我的互动…第 ${d.pages} 页 · 识别 ${d.events}`, 3600);
-      else if (d.kind === 'done') { toast(d.detail || '我互动同步完成', 4500); loadAccountMeta(() => rescanSoon()); }
-      else if (d.kind === 'error') toast(`我互动同步停止：${d.detail || '未知错误'}`, 4500);
-      else if (d.kind === 'skip') toast(d.detail || '已跳过', 3600);
+      if (d.kind === 'start') toast(t('toast_ox_start'), 3000);
+      else if (d.kind === 'progress') toast(t('toast_ox_progress', [String(d.pages), String(d.events)]), 3600);
+      else if (d.kind === 'done') { toast(d.detail || t('toast_ox_done'), 4500); loadAccountMeta(() => rescanSoon()); }
+      else if (d.kind === 'error') toast(t('toast_ox_error', [d.detail || t('toast_unknown_err')]), 4500);
+      else if (d.kind === 'skip') toast(d.detail || t('toast_ox_skip'), 3600);
       return;
     }
     if (d.kind === 'start') {
-      toast('温和同步中…（约 3 秒/页，最多 15 页）', 2600);
+      toast(t('toast_sync_start'), 2600);
     } else if (d.kind === 'progress') {
-      toast(`温和同步中…第 ${d.pages} 页 · 事件 ${d.events}`, 3600);
+      toast(t('toast_sync_progress', [String(d.pages), String(d.events)]), 3600);
     } else if (d.kind === 'done' || d.kind === 'capped' || d.kind === 'empty') {
-      toast(d.detail || `温和同步完成 ${d.pages || 0} 页 / ${d.events || 0} 条`, 4500);
+      toast(d.detail || t('toast_sync_done', [String(d.pages || 0), String(d.events || 0)]), 4500);
       loadAccountMeta(() => {
         rescanSoon();
         setTimeout(selfCheckNotifDom, 1500);
       });
     } else if (d.kind === 'error') {
-      toast(`温和同步停止：${d.detail || '未知错误'}`, 4500);
+      toast(t('toast_sync_error', [d.detail || t('toast_unknown_err')]), 4500);
     } else if (d.kind === 'skip') {
-      toast(d.detail || '已跳过同步', 3200);
+      toast(d.detail || t('toast_sync_skip'), 3200);
     }
   });
 

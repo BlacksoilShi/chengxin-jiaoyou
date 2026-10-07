@@ -1,0 +1,506 @@
+{
+  "extName": {
+    "message": "诚信浇友"
+  },
+  "extDescription": {
+    "message": "诚信浇友 · X 关注与互动标注：高亮未回关、蓝V待回关；本地「被互动 / 我互动」；时间线可一键关注（仅点击时），不自动批量关注。"
+  },
+  "extTitle": {
+    "message": "诚信浇友 · X 关注与互动标注"
+  },
+  "extSubtitle": {
+    "message": "Honest Mutuals · X 关注与互动标注"
+  },
+  "extVersionLabel": {
+    "message": "v$1"
+  },
+  "popup_li_following": {
+    "message": "正在关注：橙色「未回关」"
+  },
+  "popup_li_followers": {
+    "message": "关注者：蓝色「蓝V待回关」"
+  },
+  "popup_li_ix": {
+    "message": "列表 + 时间线：被互动 N / 我互动 N（时间线简写「被 / 我」，悬停看分项）"
+  },
+  "popup_li_follow": {
+    "message": "时间线未关注作者：可点「关注」一键关注（popup 可关）"
+  },
+  "popup_autoScan": {
+    "message": "进入列表页自动扫描"
+  },
+  "popup_showInbound": {
+    "message": "显示被互动（别人对你）"
+  },
+  "popup_showOutbound": {
+    "message": "显示我互动（你对别人）"
+  },
+  "popup_showQuickFollow": {
+    "message": "时间线显示「关注」按钮（未关注作者 · 仅点击时关注）"
+  },
+  "popup_orderNote": {
+    "message": "顺序：关注 → 被互动 → 我互动。不自动批量关注；列表页已有原生按钮则不重复插入。"
+  },
+  "popup_scan": {
+    "message": "扫描本页"
+  },
+  "popup_acctDetecting": {
+    "message": "当前账号：检测中…"
+  },
+  "popup_inboundNote": {
+    "message": "被互动 = 对方对你的：评你的帖（回复你的原帖）/ 回你的楼（回复你的回复）/ 引用你 / 点赞你。你主动评论别人不计。来源：进通知页温和同步（约 3 秒/页，单次 ≤15 页，30 分钟冷却，离开即停）+ 打开你自己的帖子时被动记录回复。按登录账号分库。"
+  },
+  "popup_syncNow": {
+    "message": "温和同步通知（较慢）"
+  },
+  "popup_outboundNote": {
+    "message": "我互动 = 你对对方的：我回复 / 我点赞 / 我转帖 / 我引用。来源：装上后你在网页上操作成功即实时记；浏览时页面已加载的推文（你点过赞/转过、你发的回复）被动补记。历史需在你自己的「喜欢」或「回复」页手动点下面按钮（≤10 页，约 3 秒/页，10 分钟内只能一次），且不全。"
+  },
+  "popup_oxSyncNow": {
+    "message": "同步我的互动（手动·较慢）"
+  },
+  "popup_clearIx": {
+    "message": "清空本账号互动数据（被+我）"
+  },
+  "popup_refreshDbg": {
+    "message": "刷新捕获状态"
+  },
+  "popup_dbgDefault": {
+    "message": "捕获状态：打开 x.com/notifications 将温和同步；打开你自己的帖子会记录回复。"
+  },
+  "popup_ready": {
+    "message": "就绪"
+  },
+  "tag_reply": {
+    "message": "评你的帖"
+  },
+  "tag_thread": {
+    "message": "回你的楼"
+  },
+  "tag_quote": {
+    "message": "引用你"
+  },
+  "tag_like": {
+    "message": "点赞你"
+  },
+  "tag_out": {
+    "message": "我回复 / 我点赞 / 我转帖 / 我引用"
+  },
+  "acct_unknown": {
+    "message": "未识别"
+  },
+  "acct_never": {
+    "message": "尚未"
+  },
+  "acct_line": {
+    "message": "当前账号 <b>$1</b><br/>被互动 <b>$2</b> 人 · 通知同步 $3<br/>我互动 <b>$4</b> 人 · 手动同步 $5"
+  },
+  "acct_line_simple": {
+    "message": "当前账号 <b>$1</b><br/>被互动 <b>$2</b> 人 · 我互动 <b>$3</b> 人"
+  },
+  "dbg_empty": {
+    "message": "捕获状态：无。请打开通知页（会温和同步），或打开你自己的帖子。"
+  },
+  "dbg_lastOp": {
+    "message": "最近操作：$1 @ $2"
+  },
+  "dbg_inbound": {
+    "message": "被互动：本批 $1 · 写入 $2 · 去重 $3 · 失败 $4"
+  },
+  "dbg_outbound": {
+    "message": "我互动：写入 $1 · 去重 $2 · 失败 $3"
+  },
+  "dbg_ox_fwd": {
+    "message": "本次我互动转发：我回复 $1 · 我点赞 $2 · 我转帖 $3 · 我引用 $4"
+  },
+  "dbg_ox_sync": {
+    "message": "我互动同步：$1 · $2 页 / $3 条"
+  },
+  "dbg_fwd": {
+    "message": "本次转发：评你的帖 $1 · 回你的楼 $2 · 引用你 $3 · 点赞你 $4"
+  },
+  "dbg_fwd_extra": {
+    "message": " · 转帖 $1 · 提及 $2"
+  },
+  "dbg_entries": {
+    "message": "条目：notif $1 / tweet $2 · instr $3$4"
+  },
+  "dbg_skip": {
+    "message": "跳过：无节点 $1 · 无类型 $2 · 无用户 $3 · 自己 $4"
+  },
+  "dbg_lastSkip": {
+    "message": "最近跳过：$1"
+  },
+  "dbg_unknownIcons": {
+    "message": "未知 icon 样例："
+  },
+  "dbg_bridge": {
+    "message": "桥接转发 $1 · 限流 $2 · 无效 $3"
+  },
+  "dbg_sync": {
+    "message": "同步：$1 · $2 页 / $3 事件"
+  },
+  "dbg_recent_header": {
+    "message": "最近捕获（可对照通知页）："
+  },
+  "dbg_recent_none": {
+    "message": "最近捕获：无"
+  },
+  "dbg_rest_suffix": {
+    "message": " · REST"
+  },
+  "status_refreshed": {
+    "message": "已刷新捕获状态"
+  },
+  "status_no_tab": {
+    "message": "没有活动标签页"
+  },
+  "status_open_x": {
+    "message": "请先打开 x.com"
+  },
+  "status_open_x_page": {
+    "message": "请先打开 x.com 页面"
+  },
+  "status_open_notif": {
+    "message": "请先打开通知页 /notifications"
+  },
+  "status_sync_confirm": {
+    "message": "确认温和同步？约 3 秒/页、最多 15 页（再点一次）"
+  },
+  "status_sync_requesting": {
+    "message": "请求温和同步…"
+  },
+  "status_sync_triggered": {
+    "message": "已触发温和同步（2 秒后开始），看页面右下角 toast"
+  },
+  "status_sync_fail": {
+    "message": "同步失败"
+  },
+  "status_sync_refresh": {
+    "message": "请刷新通知页后再点同步"
+  },
+  "status_ox_open": {
+    "message": "请先打开你自己的「喜欢」(/likes) 或「回复」(/with_replies) 页"
+  },
+  "status_ox_confirm": {
+    "message": "确认？约 3 秒/页、最多 10 页（再点一次）"
+  },
+  "status_ox_triggered": {
+    "message": "已触发我互动同步，看页面右下角 toast（别切走）"
+  },
+  "status_ox_refresh": {
+    "message": "请刷新该页后再点"
+  },
+  "status_clear_confirm": {
+    "message": "再点一次确认清空本账号（不清其他号）"
+  },
+  "status_cleared": {
+    "message": "本账号互动数据已清空"
+  },
+  "status_scanning": {
+    "message": "扫描中…"
+  },
+  "status_scan_ok": {
+    "message": "本页标记 $1 / 检查 $2"
+  },
+  "status_scan_extra": {
+    "message": "（蓝V待回关 $1，未回关 $2）"
+  },
+  "status_scan_fail": {
+    "message": "扫描失败，请刷新页面后重试"
+  },
+  "status_scan_refresh": {
+    "message": "请刷新 x.com 后再点扫描"
+  },
+  "badge_oneway": {
+    "message": "未回关"
+  },
+  "badge_blue": {
+    "message": "蓝V待回关"
+  },
+  "pill_in": {
+    "message": "被互动 $1"
+  },
+  "pill_in_short": {
+    "message": "被 $1"
+  },
+  "pill_out": {
+    "message": "我互动 $1"
+  },
+  "pill_out_short": {
+    "message": "我 $1"
+  },
+  "pill_none": {
+    "message": "暂无互动"
+  },
+  "pill_none_short": {
+    "message": "暂无"
+  },
+  "pill_in_none": {
+    "message": "被·暂无"
+  },
+  "pill_out_none": {
+    "message": "我·暂无"
+  },
+  "btn_follow": {
+    "message": "关注"
+  },
+  "btn_following": {
+    "message": "已关注"
+  },
+  "btn_follow_title": {
+    "message": "关注 @$1（诚信浇友 · 仅你点击时关注）"
+  },
+  "btn_follow_title_short": {
+    "message": "关注 @$1"
+  },
+  "act_reply": {
+    "message": "评你的帖"
+  },
+  "act_thread_reply": {
+    "message": "回你的楼"
+  },
+  "act_like": {
+    "message": "点赞你"
+  },
+  "act_quote": {
+    "message": "引用你"
+  },
+  "act_retweet": {
+    "message": "转帖你"
+  },
+  "act_mention": {
+    "message": "提及你"
+  },
+  "act_retweet_short": {
+    "message": "转帖"
+  },
+  "act_mention_short": {
+    "message": "提及"
+  },
+  "act_out_reply": {
+    "message": "我回复"
+  },
+  "act_out_like": {
+    "message": "我点赞"
+  },
+  "act_out_retweet": {
+    "message": "我转帖"
+  },
+  "act_out_quote": {
+    "message": "我引用"
+  },
+  "tip_in_header": {
+    "message": "【被互动 $1】@$2 对你"
+  },
+  "tip_out_header": {
+    "message": "【我互动 $1】你对 @$2"
+  },
+  "tip_recent": {
+    "message": "最近：$1"
+  },
+  "tip_in_empty": {
+    "message": "  暂无（进通知页温和同步 / 打开你的帖子累计）"
+  },
+  "tip_out_empty": {
+    "message": "  暂无（安装后你回复/点赞/转帖/引用会实时记；历史可在你的喜欢/回复页手动同步）"
+  },
+  "tip_account": {
+    "message": "（账号 @$1 · 仅本机累计）"
+  },
+  "tip_part": {
+    "message": "$1 $2"
+  },
+  "tip_retweet_you": {
+    "message": "转帖你 $1"
+  },
+  "tip_mention_you": {
+    "message": "提及你 $1"
+  },
+  "toast_scan_blue": {
+    "message": "蓝V待回关 $1 / $2"
+  },
+  "toast_scan_oneway": {
+    "message": "未回关 $1 / $2"
+  },
+  "toast_scan_tweets": {
+    "message": "已标注帖子 $1"
+  },
+  "toast_selfcheck_miss": {
+    "message": "自检：DOM 可见 $1 人 · 库中有 $2 · 缺 $3$4"
+  },
+  "toast_selfcheck_ok": {
+    "message": "自检：本页可见 $1 人互动均已入库"
+  },
+  "toast_migrated": {
+    "message": "已升级：分「被互动 / 我互动」两块；时间线可一键关注（popup 可关）"
+  },
+  "toast_open_notif": {
+    "message": "请先打开通知页再同步"
+  },
+  "err_open_notif": {
+    "message": "请先打开 x.com/notifications"
+  },
+  "toast_open_ox": {
+    "message": "请先打开你自己的「喜欢」或「回复」页再同步我的互动"
+  },
+  "err_open_ox": {
+    "message": "请先打开 x.com/$1/likes 或 /with_replies"
+  },
+  "err_open_ox_you": {
+    "message": "你的账号"
+  },
+  "toast_notif_batch": {
+    "message": "通知：本批 $1 条$2 · 跳过 $3（累计 $4）$5"
+  },
+  "toast_notif_empty": {
+    "message": "通知：捕获 $1，未解析出评/赞/引（instr=$2）"
+  },
+  "toast_short_reply": {
+    "message": "评帖$1"
+  },
+  "toast_short_thread": {
+    "message": "回楼$1"
+  },
+  "toast_short_quote": {
+    "message": "引$1"
+  },
+  "toast_short_like": {
+    "message": "赞$1"
+  },
+  "toast_short_rt": {
+    "message": "转$1"
+  },
+  "toast_short_mention": {
+    "message": "提$1"
+  },
+  "toast_follow_fail": {
+    "message": "关注失败"
+  },
+  "toast_follow_ok": {
+    "message": "关注成功"
+  },
+  "toast_ox_start": {
+    "message": "同步我的互动中…（约 3 秒/页，最多 10 页，别切走）"
+  },
+  "toast_ox_progress": {
+    "message": "同步我的互动…第 $1 页 · 识别 $2"
+  },
+  "toast_ox_done": {
+    "message": "我互动同步完成"
+  },
+  "toast_ox_error": {
+    "message": "我互动同步停止：$1"
+  },
+  "toast_ox_skip": {
+    "message": "已跳过"
+  },
+  "toast_sync_start": {
+    "message": "温和同步中…（约 3 秒/页，最多 15 页）"
+  },
+  "toast_sync_progress": {
+    "message": "温和同步中…第 $1 页 · 事件 $2"
+  },
+  "toast_sync_done": {
+    "message": "温和同步完成 $1 页 / $2 条"
+  },
+  "toast_sync_error": {
+    "message": "温和同步停止：$1"
+  },
+  "toast_sync_skip": {
+    "message": "已跳过同步"
+  },
+  "toast_unknown_err": {
+    "message": "未知错误"
+  },
+  "inj_follow_too_fast": {
+    "message": "操作太快，请约 10 秒后再试"
+  },
+  "inj_follow_rate": {
+    "message": "本分钟关注已达 $1 次，请稍后再试"
+  },
+  "inj_bad_user": {
+    "message": "用户名无效"
+  },
+  "inj_follow_self": {
+    "message": "不能关注自己"
+  },
+  "inj_already_following": {
+    "message": "已关注"
+  },
+  "inj_no_auth": {
+    "message": "尚未捕获登录态，请刷新页面后再试"
+  },
+  "inj_rate_429": {
+    "message": "已被限流 (429)，请稍后再试"
+  },
+  "inj_relogin": {
+    "message": "需重新登录"
+  },
+  "inj_follow_ok": {
+    "message": "关注成功"
+  },
+  "inj_follow_fail_status": {
+    "message": "关注失败 ($1)"
+  },
+  "inj_ox_busy": {
+    "message": "已有同步在进行（一次只跑一个）"
+  },
+  "inj_ox_need_page": {
+    "message": "请先打开你自己的「喜欢」或「回复」页（x.com/你/likes 或 /with_replies）"
+  },
+  "inj_ox_cooldown": {
+    "message": "刚同步过，为避免限流请约 $1 分钟后再试"
+  },
+  "inj_ox_no_tpl": {
+    "message": "未捕获到 $1 请求，请刷新该页后再点"
+  },
+  "inj_ox_no_headers": {
+    "message": "尚未捕获到请求头，请刷新页面"
+  },
+  "inj_ox_left": {
+    "message": "已离开页面，中止"
+  },
+  "inj_ox_done_detail": {
+    "message": "$1（$2 $3 页 / $4 条，已去重）"
+  },
+  "inj_err_429": {
+    "message": "429 限流：已停止，请过一段时间再试"
+  },
+  "inj_err_auth": {
+    "message": "$1 未授权：请刷新页面"
+  },
+  "inj_err_pull": {
+    "message": "拉取失败 $1"
+  },
+  "inj_sync_busy": {
+    "message": "已有温和同步在进行（一次只跑一个）"
+  },
+  "inj_sync_notif_only": {
+    "message": "仅通知页可同步"
+  },
+  "inj_sync_cd_auto": {
+    "message": "30 分钟内已同步过，约 $1 分钟后再自动拉（页面自身加载的通知仍会记录）"
+  },
+  "inj_sync_cd_manual": {
+    "message": "刚同步过，为避免限流请 $1 秒后再点温和同步"
+  },
+  "inj_sync_left_cancel": {
+    "message": "已离开通知页，同步取消"
+  },
+  "inj_sync_no_headers": {
+    "message": "尚未捕获到请求头，请稍候或刷新通知页"
+  },
+  "inj_sync_aborted": {
+    "message": "已离开通知页，温和同步中止（$1 页 / $2 条）"
+  },
+  "inj_sync_capped": {
+    "message": "温和同步完成：达单次上限（$1 页 / $2 条），30 分钟后可再拉"
+  },
+  "inj_sync_done": {
+    "message": "温和同步完成（$1 页 / $2 条）"
+  },
+  "inj_sync_empty": {
+    "message": "已请求但未识别到评/引/赞（可把 popup 捕获状态截图反馈）"
+  }
+}

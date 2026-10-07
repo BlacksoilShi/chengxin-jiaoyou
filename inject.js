@@ -1,4 +1,4 @@
-// 诚信浇友（原 X 单向关注高亮）— 页面主世界（MAIN world）v1.7.2
+// 诚信浇友（原 X 单向关注高亮）— 页面主世界（MAIN world）v1.7.3
 // 1) 只读 hook 页面 GraphQL/REST 通知响应 + 单帖 TweetDetail（被动，不额外请求）
 // 2) 进入通知页时「温和同步」：2.5–4s 抖动/页，单次 ≤15 页或 ≤300 事件，30 分钟冷却
 // 3) 解析口径（1.5.1）：
@@ -29,6 +29,51 @@
   const OX_MIN_GAP_MS = 10 * 60 * 1000;    // 两次手动同步至少隔 10 分钟
   const DBG_TAG = 'x-oneway-ix/dbg';
   const CTRL_TAG = 'x-oneway-ix/ctrl';
+
+  // UI 文案：由 content 经 ctrl 下发（MAIN 无 chrome.i18n）；缺省回落中文
+  let I18N = {
+    inj_follow_too_fast: '操作太快，请约 10 秒后再试',
+    inj_follow_rate: '本分钟关注已达 $1 次，请稍后再试',
+    inj_bad_user: '用户名无效',
+    inj_follow_self: '不能关注自己',
+    inj_already_following: '已关注',
+    inj_no_auth: '尚未捕获登录态，请刷新页面后再试',
+    inj_rate_429: '已被限流 (429)，请稍后再试',
+    inj_relogin: '需重新登录',
+    inj_follow_ok: '关注成功',
+    inj_follow_fail_status: '关注失败 ($1)',
+    inj_ox_busy: '已有同步在进行（一次只跑一个）',
+    inj_ox_need_page: '请先打开你自己的「喜欢」或「回复」页（x.com/你/likes 或 /with_replies）',
+    inj_ox_cooldown: '刚同步过，为避免限流请约 $1 分钟后再试',
+    inj_ox_no_tpl: '未捕获到 $1 请求，请刷新该页后再点',
+    inj_ox_no_headers: '尚未捕获到请求头，请刷新页面',
+    inj_ox_left: '已离开页面，中止',
+    inj_ox_done_detail: '$1（$2 $3 页 / $4 条，已去重）',
+    inj_err_429: '429 限流：已停止，请过一段时间再试',
+    inj_err_auth: '$1 未授权：请刷新页面',
+    inj_err_pull: '拉取失败 $1',
+    inj_sync_busy: '已有温和同步在进行（一次只跑一个）',
+    inj_sync_notif_only: '仅通知页可同步',
+    inj_sync_cd_auto: '30 分钟内已同步过，约 $1 分钟后再自动拉（页面自身加载的通知仍会记录）',
+    inj_sync_cd_manual: '刚同步过，为避免限流请 $1 秒后再点温和同步',
+    inj_sync_left_cancel: '已离开通知页，同步取消',
+    inj_sync_no_headers: '尚未捕获到请求头，请稍候或刷新通知页',
+    inj_sync_aborted: '已离开通知页，温和同步中止（$1 页 / $2 条）',
+    inj_sync_capped: '温和同步完成：达单次上限（$1 页 / $2 条），30 分钟后可再拉',
+    inj_sync_done: '温和同步完成（$1 页 / $2 条）',
+    inj_sync_empty: '已请求但未识别到评/引/赞（可把 popup 捕获状态截图反馈）',
+    toast_ox_done: '我互动同步完成'
+  };
+  function t(key, substitutions) {
+    let msg = I18N[key] || key;
+    const arr = substitutions == null ? [] : (Array.isArray(substitutions) ? substitutions : [substitutions]);
+    for (let i = 0; i < arr.length; i++) {
+      const n = String(i + 1);
+      msg = msg.replace(new RegExp('\\$' + n + '\\$', 'g'), String(arr[i]));
+      msg = msg.replace(new RegExp('\\$' + n + '(?!\\d)', 'g'), String(arr[i]));
+    }
+    return msg;
+  }
   const SYNC_TAG = 'x-oneway-ix/sync';
   const USER_RE = /^[A-Za-z0-9_]{1,15}$/;
   const GQL_RE = /\/i\/api\/graphql\/([^/?#]+)\/([A-Za-z0-9_]+)/;
@@ -293,9 +338,9 @@
   function followRateOk(sn) {
     const now = Date.now();
     const last = followPerUserAt.get(sn) || 0;
-    if (now - last < FOLLOW_PER_USER_MS) return { ok: false, detail: '操作太快，请约 10 秒后再试' };
+    if (now - last < FOLLOW_PER_USER_MS) return { ok: false, detail: t('inj_follow_too_fast') };
     while (followStamps.length && now - followStamps[0] > 60000) followStamps.shift();
-    if (followStamps.length >= FOLLOW_MAX_PER_MIN) return { ok: false, detail: `本分钟关注已达 ${FOLLOW_MAX_PER_MIN} 次，请稍后再试` };
+    if (followStamps.length >= FOLLOW_MAX_PER_MIN) return { ok: false, detail: t('inj_follow_rate', [FOLLOW_MAX_PER_MIN]) };
     return { ok: true };
   }
 
@@ -308,16 +353,16 @@
   async function createFollow(username, userIdHint) {
     const sn = String(username || '').toLowerCase();
     if (!USER_RE.test(sn)) {
-      emitFollow({ kind: 'result', ok: false, username: sn, detail: '用户名无效' });
+      emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_bad_user') });
       return;
     }
     if (isSelf(sn, selfName())) {
-      emitFollow({ kind: 'result', ok: false, username: sn, detail: '不能关注自己' });
+      emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_follow_self') });
       return;
     }
     const cached = followBySn.get(sn);
     if (cached && cached.following === true) {
-      emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: '已关注' });
+      emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: t('inj_already_following') });
       return;
     }
     const rate = followRateOk(sn);
@@ -327,7 +372,7 @@
     }
     const headers = buildRequestHeaders();
     if (!headers) {
-      emitFollow({ kind: 'result', ok: false, username: sn, detail: '尚未捕获登录态，请刷新页面后再试' });
+      emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_no_auth') });
       return;
     }
     markFollowAttempt(sn);
@@ -340,11 +385,11 @@
           method: 'POST', credentials: 'include', headers, mode: 'cors', body
         });
         if (res.status === 429) {
-          emitFollow({ kind: 'result', ok: false, username: sn, detail: '已被限流 (429)，请稍后再试' });
+          emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_rate_429') });
           return;
         }
         if (res.status === 401 || res.status === 403) {
-          emitFollow({ kind: 'result', ok: false, username: sn, detail: '需重新登录' });
+          emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_relogin') });
           return;
         }
         if (res.ok) {
@@ -354,13 +399,13 @@
           if (errMsg) {
             if (/already|following|已关注/i.test(errMsg)) {
               setFollowCache(sn, { restId: userId, following: true });
-              emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: '已关注' });
+              emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: t('inj_already_following') });
               return;
             }
             // GraphQL 失败再试 REST
           } else {
             setFollowCache(sn, { restId: userId, following: true });
-            emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: '关注成功' });
+            emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: t('inj_follow_ok') });
             return;
           }
         }
@@ -377,11 +422,11 @@
         method: 'POST', credentials: 'include', headers: h, mode: 'cors', body: params.toString()
       });
       if (res.status === 429) {
-        emitFollow({ kind: 'result', ok: false, username: sn, detail: '已被限流 (429)，请稍后再试' });
+        emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_rate_429') });
         return;
       }
       if (res.status === 401 || res.status === 403) {
-        emitFollow({ kind: 'result', ok: false, username: sn, detail: '需重新登录' });
+        emitFollow({ kind: 'result', ok: false, username: sn, detail: t('inj_relogin') });
         return;
       }
       let json = null;
@@ -390,18 +435,18 @@
         const err = json && json.errors && json.errors[0];
         if (err && (err.code === 158 || /already/i.test(String(err.message || '')))) {
           setFollowCache(sn, { restId: userId, following: true });
-          emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: '已关注' });
+          emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: t('inj_already_following') });
           return;
         }
         emitFollow({
           kind: 'result', ok: false, username: sn,
-          detail: String((err && err.message) || `关注失败 (${res.status})`).slice(0, 80)
+          detail: String((err && err.message) || t('inj_follow_fail_status', [res.status])).slice(0, 80)
         });
         return;
       }
       const rid = String((json && (json.id_str || json.id)) || userId || '');
       setFollowCache(sn, { restId: rid, following: true });
-      emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: '关注成功' });
+      emitFollow({ kind: 'result', ok: true, username: sn, following: true, detail: t('inj_follow_ok') });
     } catch (e) {
       emitFollow({ kind: 'result', ok: false, username: sn, detail: String(e.message || e).slice(0, 80) });
     }
@@ -1139,12 +1184,12 @@
   function emitOxSync(payload) { emitSync({ scope: 'outbound', ...payload }); }
 
   async function runOutboundSync() {
-    if (oxState.running || syncState.running) { emitOxSync({ kind: 'skip', detail: '已有同步在进行（一次只跑一个）' }); return; }
+    if (oxState.running || syncState.running) { emitOxSync({ kind: 'skip', detail: t('inj_ox_busy') }); return; }
     const kind = oxPageKind();
-    if (!kind) { emitOxSync({ kind: 'skip', detail: '请先打开你自己的「喜欢」或「回复」页（x.com/你/likes 或 /with_replies）' }); return; }
+    if (!kind) { emitOxSync({ kind: 'skip', detail: t('inj_ox_need_page') }); return; }
     if (oxState.lastAt && Date.now() - oxState.lastAt < OX_MIN_GAP_MS) {
       const m = Math.ceil((OX_MIN_GAP_MS - (Date.now() - oxState.lastAt)) / 60000);
-      emitOxSync({ kind: 'skip', detail: `刚同步过，为避免限流请约 ${m} 分钟后再试` });
+      emitOxSync({ kind: 'skip', detail: t('inj_ox_cooldown', [m]) });
       return;
     }
     const op = OX_SYNC_OPS[kind];
@@ -1153,9 +1198,9 @@
       const end = Date.now() + 6000;
       while (!gqlOx[op] && Date.now() < end && !oxAbort()) await new Promise((r) => setTimeout(r, 300));
       const tpl = gqlOx[op];
-      if (!tpl) { emitOxSync({ kind: 'error', status: 'error', detail: `未捕获到 ${op} 请求，请刷新该页后再点` }); return; }
+      if (!tpl) { emitOxSync({ kind: 'error', status: 'error', detail: t('inj_ox_no_tpl', [op]) }); return; }
       const headers = buildRequestHeaders();
-      if (!headers) { emitOxSync({ kind: 'error', status: 'error', detail: '尚未捕获到请求头，请刷新页面' }); return; }
+      if (!headers) { emitOxSync({ kind: 'error', status: 'error', detail: t('inj_ox_no_headers') }); return; }
       emitOxSync({ kind: 'start', feed: op });
       let cursor = null;
       let failStatus = 0;
@@ -1190,7 +1235,7 @@
       emitOxSync({
         kind: 'done',
         status: aborted ? 'aborted' : 'done',
-        detail: `${aborted ? '已离开页面，中止' : '我互动同步完成'}（${op} ${oxState.pages} 页 / ${oxState.events} 条，已去重）`,
+        detail: t('inj_ox_done_detail', [aborted ? t('inj_ox_left') : t('toast_ox_done'), op, oxState.pages, oxState.events]),
         pages: oxState.pages,
         events: oxState.events
       });
@@ -1309,9 +1354,9 @@
   }
 
   function errDetail(status) {
-    if (status === 429) return '429 限流：已停止，请过一段时间再试';
-    if (status === 401 || status === 403) return `${status} 未授权：请刷新页面`;
-    return `拉取失败 ${status || ''}`.trim();
+    if (status === 429) return t('inj_err_429');
+    if (status === 401 || status === 403) return t('inj_err_auth', [status]);
+    return t('inj_err_pull', [status || '']).trim();
   }
 
   async function waitForGql(ms) {
@@ -1327,17 +1372,17 @@
     const force = !!(opts && opts.force);
     const lastSyncAt = Math.max(Number((opts && opts.lastSyncAt) || 0) || 0, syncState.lastSyncAt || 0);
 
-    if (syncState.running || oxState.running) { emitSync({ kind: 'skip', detail: '已有温和同步在进行（一次只跑一个）' }); return; }
-    if (!isNotifPath()) { emitSync({ kind: 'skip', detail: '仅通知页可同步' }); return; }
+    if (syncState.running || oxState.running) { emitSync({ kind: 'skip', detail: t('inj_sync_busy') }); return; }
+    if (!isNotifPath()) { emitSync({ kind: 'skip', detail: t('inj_sync_notif_only') }); return; }
     const since = Date.now() - lastSyncAt;
     if (!force && lastSyncAt && since < COOLDOWN_MS) {
       const mins = Math.ceil((COOLDOWN_MS - since) / 60000);
-      emitSync({ kind: 'skip', detail: `30 分钟内已同步过，约 ${mins} 分钟后再自动拉（页面自身加载的通知仍会记录）` });
+      emitSync({ kind: 'skip', detail: t('inj_sync_cd_auto', [mins]) });
       return;
     }
     if (force && syncState.lastSyncAt && Date.now() - syncState.lastSyncAt < FORCE_MIN_GAP_MS) {
       const s = Math.ceil((FORCE_MIN_GAP_MS - (Date.now() - syncState.lastSyncAt)) / 1000);
-      emitSync({ kind: 'skip', detail: `刚同步过，为避免限流请 ${s} 秒后再点温和同步` });
+      emitSync({ kind: 'skip', detail: t('inj_sync_cd_manual', [s]) });
       return;
     }
 
@@ -1352,10 +1397,10 @@
     try {
       // 等页面自己的 NotificationsTimeline 请求，抄 queryId/features（最多 6 秒）
       const hasGql = await waitForGql(6000);
-      if (shouldAbort()) { emitSync({ kind: 'skip', detail: '已离开通知页，同步取消' }); return; }
+      if (shouldAbort()) { emitSync({ kind: 'skip', detail: t('inj_sync_left_cancel') }); return; }
       const headers = buildRequestHeaders();
       if (!headers) {
-        emitSync({ kind: 'error', status: 'error', detail: '尚未捕获到请求头，请稍候或刷新通知页' });
+        emitSync({ kind: 'error', status: 'error', detail: t('inj_sync_no_headers') });
         return;
       }
       emitSync({ kind: 'start', force, gentle: true });
@@ -1399,17 +1444,17 @@
       }
 
       if (shouldAbort()) {
-        emitSync({ kind: 'done', status: 'aborted', detail: `已离开通知页，温和同步中止（${syncState.pages} 页 / ${syncState.events} 条）`, pages: syncState.pages, events: syncState.events });
+        emitSync({ kind: 'done', status: 'aborted', detail: t('inj_sync_aborted', [syncState.pages, syncState.events]), pages: syncState.pages, events: syncState.events });
         return;
       }
       const hitCap = !budgetLeft();
       syncState.status = hitCap ? 'capped' : 'done';
       syncState.detail = hitCap
-        ? `温和同步完成：达单次上限（${syncState.pages} 页 / ${syncState.events} 条），30 分钟后可再拉`
-        : `温和同步完成（${syncState.pages} 页 / ${syncState.events} 条）`;
+        ? t('inj_sync_capped', [syncState.pages, syncState.events])
+        : t('inj_sync_done', [syncState.pages, syncState.events]);
       if (syncState.events === 0 && syncState.pages > 0) {
         syncState.status = 'empty';
-        syncState.detail = '已请求但未识别到评/引/赞（可把 popup 捕获状态截图反馈）';
+        syncState.detail = t('inj_sync_empty');
       }
       emitSync({ kind: 'done', status: syncState.status, detail: syncState.detail, pages: syncState.pages, events: syncState.events });
     } catch (e) {
@@ -1533,6 +1578,10 @@
     if (ev.source !== window || ev.origin !== location.origin) return;
     const d = ev.data;
     if (!d || d.__tag !== CTRL_TAG) return;
+    if (d.cmd === 'i18n' && d.pack && typeof d.pack === 'object') {
+      I18N = { ...I18N, ...d.pack };
+      return;
+    }
     if (d.cmd === 'sync-start') {
       if (!ctrlOnce('sync-start', d.force ? 'force' : 'auto')) return;
       runAutoSync({ force: !!d.force, lastSyncAt: Number(d.lastSyncAt) || 0 });

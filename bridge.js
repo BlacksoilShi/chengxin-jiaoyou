@@ -6,21 +6,38 @@
   const OX_TAG = 'x-oneway-ox/v1';
   const FOLLOW_TAG = 'x-oneway-ix/follow';
   const OX_ACTIONS = new Set(['reply', 'like', 'retweet', 'quote']);
-  const OX_LABEL = { reply: '我回复', like: '我点赞', retweet: '我转帖', quote: '我引用' };
+  function t(key, substitutions) {
+    try {
+      const msg = chrome.i18n.getMessage(key, substitutions == null ? undefined : substitutions);
+      return msg || key;
+    } catch (_) {
+      return key;
+    }
+  }
+  function OX_LABEL() {
+    return {
+      reply: t('act_out_reply'),
+      like: t('act_out_like'),
+      retweet: t('act_out_retweet'),
+      quote: t('act_out_quote')
+    };
+  }
   const OX_KEY_RE = /^(like|rt|tw|q):\d{1,25}$/;
   const oxRecent = new Map();
   const oxStamps = [];
   let oxDbgTimer = null;
   const USER_RE = /^[A-Za-z0-9_]{1,15}$/;
   const ACTIONS = new Set(['reply', 'thread_reply', 'like', 'retweet', 'quote', 'mention']);
-  const ACTION_LABEL = {
-    reply: '评你的帖',
-    thread_reply: '回你的楼',
-    like: '点赞你',
-    quote: '引用你',
-    retweet: '转帖',
-    mention: '提及'
-  };
+  function ACTION_LABEL() {
+    return {
+      reply: t('act_reply'),
+      thread_reply: t('act_thread_reply'),
+      like: t('act_like'),
+      quote: t('act_quote'),
+      retweet: t('act_retweet_short'),
+      mention: t('act_mention_short')
+    };
+  }
   const recent = new Map();
   const stamps = [];
 
@@ -161,7 +178,7 @@
           for (const s of d.sample) {
             pushRecent({
               action: s.action,
-              actionLabel: ACTION_LABEL[s.action] || s.action,
+              actionLabel: ACTION_LABEL()[s.action] || s.action,
               username: s.username,
               notifId: s.notifId,
               at: dbg.lastAt,
@@ -206,7 +223,7 @@
     if (dbg.byAction[d.action] != null) dbg.byAction[d.action] += 1;
     pushRecent({
       action: d.action,
-      actionLabel: ACTION_LABEL[d.action] || d.action,
+      actionLabel: ACTION_LABEL()[d.action] || d.action,
       username: user,
       notifId,
       at: now,
@@ -224,7 +241,7 @@
         if (res?.duplicate) {
           pushRecent({
             action: d.action,
-            actionLabel: ACTION_LABEL[d.action] || d.action,
+            actionLabel: ACTION_LABEL()[d.action] || d.action,
             username: user,
             notifId,
             at: Date.now(),
@@ -256,7 +273,7 @@
     pushRecent({
       dir: 'out',
       action: d.action,
-      actionLabel: OX_LABEL[d.action],
+      actionLabel: OX_LABEL()[d.action],
       username: user,
       notifId: d.key,
       at: now,

@@ -1,0 +1,506 @@
+{
+  "extName": {
+    "message": "Honest Mutuals"
+  },
+  "extDescription": {
+    "message": "Honest Mutuals · X follow & interaction labels: highlight non-mutuals and unverified blue follows; local Inbound / Outbound counts; one-tap Follow on timeline (click only), never auto-follow."
+  },
+  "extTitle": {
+    "message": "Honest Mutuals · X follow & interaction labels"
+  },
+  "extSubtitle": {
+    "message": "Honest Mutuals · X follow & interaction labels"
+  },
+  "extVersionLabel": {
+    "message": "v$1"
+  },
+  "popup_li_following": {
+    "message": "Following: orange “Not mutual”"
+  },
+  "popup_li_followers": {
+    "message": "Followers: blue “Blue unverified”"
+  },
+  "popup_li_ix": {
+    "message": "Lists + timeline: Inbound N / Outbound N (timeline short “In / Out”; hover for breakdown)"
+  },
+  "popup_li_follow": {
+    "message": "Unfollowed authors on timeline: tap Follow (can disable in popup)"
+  },
+  "popup_autoScan": {
+    "message": "Auto-scan list pages"
+  },
+  "popup_showInbound": {
+    "message": "Show Inbound (others → you)"
+  },
+  "popup_showOutbound": {
+    "message": "Show Outbound (you → others)"
+  },
+  "popup_showQuickFollow": {
+    "message": "Show Follow on timeline (unfollowed authors · click only)"
+  },
+  "popup_orderNote": {
+    "message": "Order: Follow → Inbound → Outbound. No auto bulk follow; skip if the list already has a native button."
+  },
+  "popup_scan": {
+    "message": "Scan this page"
+  },
+  "popup_acctDetecting": {
+    "message": "Account: detecting…"
+  },
+  "popup_inboundNote": {
+    "message": "Inbound = others on you: replied to your post / replied in your thread / quoted you / liked you. Your comments on others don’t count. Source: gentle notif sync (~3s/page, ≤15 pages, 30‑min cooldown, stops when you leave) + passive replies when you open your posts. Per-account local DB."
+  },
+  "popup_syncNow": {
+    "message": "Gentle notif sync (slow)"
+  },
+  "popup_outboundNote": {
+    "message": "Outbound = you on them: my reply / like / repost / quote. Live after install on successful actions; passive backfill from loaded tweets. History: open your Likes or Replies and tap below (≤10 pages, ~3s/page, once per 10 min), incomplete."
+  },
+  "popup_oxSyncNow": {
+    "message": "Sync my outbound (manual · slow)"
+  },
+  "popup_clearIx": {
+    "message": "Clear this account’s interaction data"
+  },
+  "popup_refreshDbg": {
+    "message": "Refresh capture status"
+  },
+  "popup_dbgDefault": {
+    "message": "Capture: open x.com/notifications for gentle sync; open your posts to record replies."
+  },
+  "popup_ready": {
+    "message": "Ready"
+  },
+  "tag_reply": {
+    "message": "replied to your post"
+  },
+  "tag_thread": {
+    "message": "replied in your thread"
+  },
+  "tag_quote": {
+    "message": "quoted you"
+  },
+  "tag_like": {
+    "message": "liked you"
+  },
+  "tag_out": {
+    "message": "my reply / like / repost / quote"
+  },
+  "acct_unknown": {
+    "message": "unknown"
+  },
+  "acct_never": {
+    "message": "never"
+  },
+  "acct_line": {
+    "message": "Account <b>$1</b><br/>Inbound <b>$2</b> · notif sync $3<br/>Outbound <b>$4</b> · manual sync $5"
+  },
+  "acct_line_simple": {
+    "message": "Account <b>$1</b><br/>Inbound <b>$2</b> · Outbound <b>$3</b>"
+  },
+  "dbg_empty": {
+    "message": "Capture: none. Open Notifications (gentle sync) or open your own posts."
+  },
+  "dbg_lastOp": {
+    "message": "Last op: $1 @ $2"
+  },
+  "dbg_inbound": {
+    "message": "Inbound: batch $1 · write $2 · dup $3 · fail $4"
+  },
+  "dbg_outbound": {
+    "message": "Outbound: write $1 · dup $2 · fail $3"
+  },
+  "dbg_ox_fwd": {
+    "message": "Outbound fwd: reply $1 · like $2 · repost $3 · quote $4"
+  },
+  "dbg_ox_sync": {
+    "message": "Outbound sync: $1 · $2 pages / $3 events"
+  },
+  "dbg_fwd": {
+    "message": "Fwd: post-reply $1 · thread $2 · quote $3 · like $4"
+  },
+  "dbg_fwd_extra": {
+    "message": " · repost $1 · mention $2"
+  },
+  "dbg_entries": {
+    "message": "Entries: notif $1 / tweet $2 · instr $3$4"
+  },
+  "dbg_skip": {
+    "message": "Skip: no node $1 · no type $2 · no user $3 · self $4"
+  },
+  "dbg_lastSkip": {
+    "message": "Last skip: $1"
+  },
+  "dbg_unknownIcons": {
+    "message": "Unknown icon samples:"
+  },
+  "dbg_bridge": {
+    "message": "Bridge fwd $1 · rate-limit $2 · invalid $3"
+  },
+  "dbg_sync": {
+    "message": "Sync: $1 · $2 pages / $3 events"
+  },
+  "dbg_recent_header": {
+    "message": "Recent captures (check Notifications):"
+  },
+  "dbg_recent_none": {
+    "message": "Recent captures: none"
+  },
+  "dbg_rest_suffix": {
+    "message": " · REST"
+  },
+  "status_refreshed": {
+    "message": "Capture status refreshed"
+  },
+  "status_no_tab": {
+    "message": "No active tab"
+  },
+  "status_open_x": {
+    "message": "Open x.com first"
+  },
+  "status_open_x_page": {
+    "message": "Open an x.com page first"
+  },
+  "status_open_notif": {
+    "message": "Open /notifications first"
+  },
+  "status_sync_confirm": {
+    "message": "Confirm gentle sync? ~3s/page, ≤15 pages (tap again)"
+  },
+  "status_sync_requesting": {
+    "message": "Requesting gentle sync…"
+  },
+  "status_sync_triggered": {
+    "message": "Gentle sync started (in ~2s); watch bottom-right toast"
+  },
+  "status_sync_fail": {
+    "message": "Sync failed"
+  },
+  "status_sync_refresh": {
+    "message": "Refresh Notifications, then sync again"
+  },
+  "status_ox_open": {
+    "message": "Open your Likes (/likes) or Replies (/with_replies) first"
+  },
+  "status_ox_confirm": {
+    "message": "Confirm? ~3s/page, ≤10 pages (tap again)"
+  },
+  "status_ox_triggered": {
+    "message": "Outbound sync started; watch toast (stay on page)"
+  },
+  "status_ox_refresh": {
+    "message": "Refresh that page, then try again"
+  },
+  "status_clear_confirm": {
+    "message": "Tap again to clear this account (others kept)"
+  },
+  "status_cleared": {
+    "message": "This account’s interaction data cleared"
+  },
+  "status_scanning": {
+    "message": "Scanning…"
+  },
+  "status_scan_ok": {
+    "message": "Marked $1 / checked $2"
+  },
+  "status_scan_extra": {
+    "message": "(Blue $1, not mutual $2)"
+  },
+  "status_scan_fail": {
+    "message": "Scan failed; refresh and retry"
+  },
+  "status_scan_refresh": {
+    "message": "Refresh x.com, then scan again"
+  },
+  "badge_oneway": {
+    "message": "Not mutual"
+  },
+  "badge_blue": {
+    "message": "Blue pending"
+  },
+  "pill_in": {
+    "message": "In $1"
+  },
+  "pill_in_short": {
+    "message": "In $1"
+  },
+  "pill_out": {
+    "message": "Out $1"
+  },
+  "pill_out_short": {
+    "message": "Out $1"
+  },
+  "pill_none": {
+    "message": "No ix"
+  },
+  "pill_none_short": {
+    "message": "None"
+  },
+  "pill_in_none": {
+    "message": "In·none"
+  },
+  "pill_out_none": {
+    "message": "Out·none"
+  },
+  "btn_follow": {
+    "message": "Follow"
+  },
+  "btn_following": {
+    "message": "Following"
+  },
+  "btn_follow_title": {
+    "message": "Follow @$1 (Honest Mutuals · click only)"
+  },
+  "btn_follow_title_short": {
+    "message": "Follow @$1"
+  },
+  "act_reply": {
+    "message": "replied to your post"
+  },
+  "act_thread_reply": {
+    "message": "replied in your thread"
+  },
+  "act_like": {
+    "message": "liked you"
+  },
+  "act_quote": {
+    "message": "quoted you"
+  },
+  "act_retweet": {
+    "message": "reposted you"
+  },
+  "act_mention": {
+    "message": "mentioned you"
+  },
+  "act_retweet_short": {
+    "message": "repost"
+  },
+  "act_mention_short": {
+    "message": "mention"
+  },
+  "act_out_reply": {
+    "message": "my reply"
+  },
+  "act_out_like": {
+    "message": "my like"
+  },
+  "act_out_retweet": {
+    "message": "my repost"
+  },
+  "act_out_quote": {
+    "message": "my quote"
+  },
+  "tip_in_header": {
+    "message": "[Inbound $1] @$2 → you"
+  },
+  "tip_out_header": {
+    "message": "[Outbound $1] you → @$2"
+  },
+  "tip_recent": {
+    "message": "Last: $1"
+  },
+  "tip_in_empty": {
+    "message": "  None (gentle notif sync / open your posts)"
+  },
+  "tip_out_empty": {
+    "message": "  None (live after reply/like/repost/quote; history via Likes/Replies sync)"
+  },
+  "tip_account": {
+    "message": "(account @$1 · local only)"
+  },
+  "tip_part": {
+    "message": "$1 $2"
+  },
+  "tip_retweet_you": {
+    "message": "reposted you $1"
+  },
+  "tip_mention_you": {
+    "message": "mentioned you $1"
+  },
+  "toast_scan_blue": {
+    "message": "Blue pending $1 / $2"
+  },
+  "toast_scan_oneway": {
+    "message": "Not mutual $1 / $2"
+  },
+  "toast_scan_tweets": {
+    "message": "Labeled tweets $1"
+  },
+  "toast_selfcheck_miss": {
+    "message": "Check: DOM $1 · in DB $2 · miss $3$4"
+  },
+  "toast_selfcheck_ok": {
+    "message": "Check: $1 visible users all in DB"
+  },
+  "toast_migrated": {
+    "message": "Upgraded: Inbound / Outbound pills; timeline Follow (toggle in popup)"
+  },
+  "toast_open_notif": {
+    "message": "Open Notifications before syncing"
+  },
+  "err_open_notif": {
+    "message": "Open x.com/notifications first"
+  },
+  "toast_open_ox": {
+    "message": "Open your Likes or Replies before outbound sync"
+  },
+  "err_open_ox": {
+    "message": "Open x.com/$1/likes or /with_replies first"
+  },
+  "err_open_ox_you": {
+    "message": "you"
+  },
+  "toast_notif_batch": {
+    "message": "Notif: batch $1$2 · skip $3 (total $4)$5"
+  },
+  "toast_notif_empty": {
+    "message": "Notif: caught $1, no reply/like/quote (instr=$2)"
+  },
+  "toast_short_reply": {
+    "message": "reply$1"
+  },
+  "toast_short_thread": {
+    "message": "thread$1"
+  },
+  "toast_short_quote": {
+    "message": "quote$1"
+  },
+  "toast_short_like": {
+    "message": "like$1"
+  },
+  "toast_short_rt": {
+    "message": "rt$1"
+  },
+  "toast_short_mention": {
+    "message": "mention$1"
+  },
+  "toast_follow_fail": {
+    "message": "Follow failed"
+  },
+  "toast_follow_ok": {
+    "message": "Followed"
+  },
+  "toast_ox_start": {
+    "message": "Outbound sync… (~3s/page, ≤10, stay put)"
+  },
+  "toast_ox_progress": {
+    "message": "Outbound… page $1 · $2 found"
+  },
+  "toast_ox_done": {
+    "message": "Outbound sync done"
+  },
+  "toast_ox_error": {
+    "message": "Outbound sync stopped: $1"
+  },
+  "toast_ox_skip": {
+    "message": "Skipped"
+  },
+  "toast_sync_start": {
+    "message": "Gentle sync… (~3s/page, ≤15)"
+  },
+  "toast_sync_progress": {
+    "message": "Gentle sync… page $1 · events $2"
+  },
+  "toast_sync_done": {
+    "message": "Gentle sync done $1 pages / $2 events"
+  },
+  "toast_sync_error": {
+    "message": "Gentle sync stopped: $1"
+  },
+  "toast_sync_skip": {
+    "message": "Sync skipped"
+  },
+  "toast_unknown_err": {
+    "message": "unknown error"
+  },
+  "inj_follow_too_fast": {
+    "message": "Too fast — try again in ~10s"
+  },
+  "inj_follow_rate": {
+    "message": "Follow limit $1/min — wait a bit"
+  },
+  "inj_bad_user": {
+    "message": "Invalid username"
+  },
+  "inj_follow_self": {
+    "message": "Can't follow yourself"
+  },
+  "inj_already_following": {
+    "message": "Following"
+  },
+  "inj_no_auth": {
+    "message": "Auth not captured — refresh and retry"
+  },
+  "inj_rate_429": {
+    "message": "Rate limited (429) — try later"
+  },
+  "inj_relogin": {
+    "message": "Please log in again"
+  },
+  "inj_follow_ok": {
+    "message": "Followed"
+  },
+  "inj_follow_fail_status": {
+    "message": "Follow failed ($1)"
+  },
+  "inj_ox_busy": {
+    "message": "A sync is already running (one at a time)"
+  },
+  "inj_ox_need_page": {
+    "message": "Open your Likes or Replies page first (x.com/you/likes or /with_replies)"
+  },
+  "inj_ox_cooldown": {
+    "message": "Just synced — wait ~$1 min to avoid limits"
+  },
+  "inj_ox_no_tpl": {
+    "message": "No $1 request captured — refresh and retry"
+  },
+  "inj_ox_no_headers": {
+    "message": "Headers not captured — refresh the page"
+  },
+  "inj_ox_left": {
+    "message": "Left page — aborted"
+  },
+  "inj_ox_done_detail": {
+    "message": "$1 ($2 $3 pages / $4 events, deduped)"
+  },
+  "inj_err_429": {
+    "message": "429 rate limit — stopped; try later"
+  },
+  "inj_err_auth": {
+    "message": "$1 unauthorized — refresh the page"
+  },
+  "inj_err_pull": {
+    "message": "Fetch failed $1"
+  },
+  "inj_sync_busy": {
+    "message": "Gentle sync already running (one at a time)"
+  },
+  "inj_sync_notif_only": {
+    "message": "Sync only on Notifications"
+  },
+  "inj_sync_cd_auto": {
+    "message": "Synced within 30 min — auto again in ~$1 min (page-loaded notifs still record)"
+  },
+  "inj_sync_cd_manual": {
+    "message": "Just synced — wait $1s before gentle sync"
+  },
+  "inj_sync_left_cancel": {
+    "message": "Left Notifications — sync cancelled"
+  },
+  "inj_sync_no_headers": {
+    "message": "Headers not ready — wait or refresh Notifications"
+  },
+  "inj_sync_aborted": {
+    "message": "Left Notifications — gentle sync aborted ($1 pages / $2 events)"
+  },
+  "inj_sync_capped": {
+    "message": "Gentle sync done: hit session cap ($1 pages / $2 events); again in 30 min"
+  },
+  "inj_sync_done": {
+    "message": "Gentle sync done ($1 pages / $2 events)"
+  },
+  "inj_sync_empty": {
+    "message": "Requested but no reply/quote/like found (screenshot popup capture if reporting)"
+  }
+}

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "诚信浇友",
-  "version": "1.7.2",
-  "description": "诚信浇友 · X 关注与互动标注：高亮未回关、蓝V待回关；本地「被互动 / 我互动」；时间线可一键关注（仅点击时），不自动批量关注。",
+  "name": "__MSG_extName__",
+  "version": "1.7.3",
+  "description": "__MSG_extDescription__",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -10,7 +10,7 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_title": "诚信浇友 · X 关注与互动标注",
+    "default_title": "__MSG_extTitle__",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -66,5 +66,6 @@
   "minimum_chrome_version": "111",
   "background": {
     "service_worker": "background.js"
-  }
+  },
+  "default_locale": "zh_CN"
 }

@@ -1,0 +1,506 @@
+{
+  "extName": {
+    "message": "誠実相互"
+  },
+  "extDescription": {
+    "message": "誠実相互 · Xのフォローと交流ラベル：片思い・未フォローバックの青バッジを強調；ローカル「被交流 / 自分交流」；タイムラインでワンタップフォロー（クリック時のみ）、自動一括フォローなし。"
+  },
+  "extTitle": {
+    "message": "誠実相互 · Xフォローと交流ラベル"
+  },
+  "extSubtitle": {
+    "message": "Honest Mutuals · Xフォローと交流ラベル"
+  },
+  "extVersionLabel": {
+    "message": "v$1"
+  },
+  "popup_li_following": {
+    "message": "フォロー中：オレンジ「未相互」"
+  },
+  "popup_li_followers": {
+    "message": "フォロワー：青「青バッジ未フォロー」"
+  },
+  "popup_li_ix": {
+    "message": "リスト＋タイムライン：被交流 N / 自分交流 N（短縮「被 / 自」、ホバーで内訳）"
+  },
+  "popup_li_follow": {
+    "message": "未フォローの投稿者：タイムラインで「フォロー」可能（popupでオフ可）"
+  },
+  "popup_autoScan": {
+    "message": "リストページで自動スキャン"
+  },
+  "popup_showInbound": {
+    "message": "被交流を表示（相手→自分）"
+  },
+  "popup_showOutbound": {
+    "message": "自分交流を表示（自分→相手）"
+  },
+  "popup_showQuickFollow": {
+    "message": "タイムラインに「フォロー」表示（未フォロー・クリック時のみ）"
+  },
+  "popup_orderNote": {
+    "message": "順：フォロー → 被交流 → 自分交流。自動一括フォローなし；リストに公式ボタンがあれば重複挿入しない。"
+  },
+  "popup_scan": {
+    "message": "このページをスキャン"
+  },
+  "popup_acctDetecting": {
+    "message": "アカウント：検出中…"
+  },
+  "popup_inboundNote": {
+    "message": "被交流＝相手の自分向け：投稿への返信 / 自分の返信への返信 / 引用 / いいね。自分から他人へのコメントは含めない。通知ページの穏やか同期（約3秒/頁・≤15頁・30分クールダウン・離脱で停止）＋自分の投稿を開いたときの受動記録。ログインアカウント別に保存。"
+  },
+  "popup_syncNow": {
+    "message": "通知を穏やか同期（遅い）"
+  },
+  "popup_outboundNote": {
+    "message": "自分交流＝自分の相手向け：返信 / いいね / リポスト / 引用。導入後の成功操作は即時記録；読み込み済みツイートから受動補完。履歴は自分の「いいね」「返信」ページで下のボタン（≤10頁・約3秒/頁・10分に1回）、完全ではない。"
+  },
+  "popup_oxSyncNow": {
+    "message": "自分交流を同期（手動・遅い）"
+  },
+  "popup_clearIx": {
+    "message": "このアカウントの交流データを消去"
+  },
+  "popup_refreshDbg": {
+    "message": "キャプチャ状態を更新"
+  },
+  "popup_dbgDefault": {
+    "message": "キャプチャ：x.com/notifications で穏やか同期；自分の投稿を開くと返信を記録。"
+  },
+  "popup_ready": {
+    "message": "準備完了"
+  },
+  "tag_reply": {
+    "message": "投稿へ返信"
+  },
+  "tag_thread": {
+    "message": "スレへ返信"
+  },
+  "tag_quote": {
+    "message": "引用された"
+  },
+  "tag_like": {
+    "message": "いいねされた"
+  },
+  "tag_out": {
+    "message": "自分返信 / いいね / リポスト / 引用"
+  },
+  "acct_unknown": {
+    "message": "未認識"
+  },
+  "acct_never": {
+    "message": "未実施"
+  },
+  "acct_line": {
+    "message": "アカウント <b>$1</b><br/>被交流 <b>$2</b> · 通知同期 $3<br/>自分交流 <b>$4</b> · 手動同期 $5"
+  },
+  "acct_line_simple": {
+    "message": "アカウント <b>$1</b><br/>被交流 <b>$2</b> · 自分交流 <b>$3</b>"
+  },
+  "dbg_empty": {
+    "message": "キャプチャなし。通知ページ（穏やか同期）か自分の投稿を開いてください。"
+  },
+  "dbg_lastOp": {
+    "message": "最近の操作：$1 @ $2"
+  },
+  "dbg_inbound": {
+    "message": "被交流：今回 $1 · 書込 $2 · 重複 $3 · 失敗 $4"
+  },
+  "dbg_outbound": {
+    "message": "自分交流：書込 $1 · 重複 $2 · 失敗 $3"
+  },
+  "dbg_ox_fwd": {
+    "message": "自分交流転送：返信 $1 · いいね $2 · リポスト $3 · 引用 $4"
+  },
+  "dbg_ox_sync": {
+    "message": "自分交流同期：$1 · $2 頁 / $3 件"
+  },
+  "dbg_fwd": {
+    "message": "転送：投稿返信 $1 · スレ $2 · 引用 $3 · いいね $4"
+  },
+  "dbg_fwd_extra": {
+    "message": " · リポスト $1 · メンション $2"
+  },
+  "dbg_entries": {
+    "message": "件数：notif $1 / tweet $2 · instr $3$4"
+  },
+  "dbg_skip": {
+    "message": "スキップ：ノードなし $1 · 種別なし $2 · ユーザーなし $3 · 自分 $4"
+  },
+  "dbg_lastSkip": {
+    "message": "最近のスキップ：$1"
+  },
+  "dbg_unknownIcons": {
+    "message": "不明アイコン例："
+  },
+  "dbg_bridge": {
+    "message": "ブリッジ転送 $1 · 制限 $2 · 無効 $3"
+  },
+  "dbg_sync": {
+    "message": "同期：$1 · $2 頁 / $3 イベント"
+  },
+  "dbg_recent_header": {
+    "message": "最近のキャプチャ（通知と照合）："
+  },
+  "dbg_recent_none": {
+    "message": "最近のキャプチャ：なし"
+  },
+  "dbg_rest_suffix": {
+    "message": " · REST"
+  },
+  "status_refreshed": {
+    "message": "キャプチャ状態を更新しました"
+  },
+  "status_no_tab": {
+    "message": "アクティブなタブがありません"
+  },
+  "status_open_x": {
+    "message": "先に x.com を開いてください"
+  },
+  "status_open_x_page": {
+    "message": "先に x.com のページを開いてください"
+  },
+  "status_open_notif": {
+    "message": "先に /notifications を開いてください"
+  },
+  "status_sync_confirm": {
+    "message": "穏やか同期を確認？約3秒/頁・最大15頁（もう一度）"
+  },
+  "status_sync_requesting": {
+    "message": "穏やか同期を要求中…"
+  },
+  "status_sync_triggered": {
+    "message": "穏やか同期を開始（約2秒後）。右下の toast を確認"
+  },
+  "status_sync_fail": {
+    "message": "同期失敗"
+  },
+  "status_sync_refresh": {
+    "message": "通知ページを更新してから再同期"
+  },
+  "status_ox_open": {
+    "message": "先に自分の「いいね」(/likes) または「返信」(/with_replies) を開いてください"
+  },
+  "status_ox_confirm": {
+    "message": "確認？約3秒/頁・最大10頁（もう一度）"
+  },
+  "status_ox_triggered": {
+    "message": "自分交流同期を開始。toast を確認（ページを離れない）"
+  },
+  "status_ox_refresh": {
+    "message": "そのページを更新してから再試行"
+  },
+  "status_clear_confirm": {
+    "message": "もう一度押すとこのアカウントを消去（他は残す）"
+  },
+  "status_cleared": {
+    "message": "このアカウントの交流データを消去しました"
+  },
+  "status_scanning": {
+    "message": "スキャン中…"
+  },
+  "status_scan_ok": {
+    "message": "マーク $1 / 検査 $2"
+  },
+  "status_scan_extra": {
+    "message": "（青未フォロー $1，未相互 $2）"
+  },
+  "status_scan_fail": {
+    "message": "スキャン失敗。更新して再試行"
+  },
+  "status_scan_refresh": {
+    "message": "x.com を更新してからスキャン"
+  },
+  "badge_oneway": {
+    "message": "未相互"
+  },
+  "badge_blue": {
+    "message": "青未フォロー"
+  },
+  "pill_in": {
+    "message": "被 $1"
+  },
+  "pill_in_short": {
+    "message": "被 $1"
+  },
+  "pill_out": {
+    "message": "自 $1"
+  },
+  "pill_out_short": {
+    "message": "自 $1"
+  },
+  "pill_none": {
+    "message": "交流なし"
+  },
+  "pill_none_short": {
+    "message": "なし"
+  },
+  "pill_in_none": {
+    "message": "被·なし"
+  },
+  "pill_out_none": {
+    "message": "自·なし"
+  },
+  "btn_follow": {
+    "message": "フォロー"
+  },
+  "btn_following": {
+    "message": "フォロー中"
+  },
+  "btn_follow_title": {
+    "message": "@$1 をフォロー（誠実相互 · クリック時のみ）"
+  },
+  "btn_follow_title_short": {
+    "message": "@$1 をフォロー"
+  },
+  "act_reply": {
+    "message": "投稿へ返信"
+  },
+  "act_thread_reply": {
+    "message": "スレへ返信"
+  },
+  "act_like": {
+    "message": "いいねされた"
+  },
+  "act_quote": {
+    "message": "引用された"
+  },
+  "act_retweet": {
+    "message": "リポストされた"
+  },
+  "act_mention": {
+    "message": "メンションされた"
+  },
+  "act_retweet_short": {
+    "message": "リポスト"
+  },
+  "act_mention_short": {
+    "message": "メンション"
+  },
+  "act_out_reply": {
+    "message": "自分返信"
+  },
+  "act_out_like": {
+    "message": "自分いいね"
+  },
+  "act_out_retweet": {
+    "message": "自分リポスト"
+  },
+  "act_out_quote": {
+    "message": "自分引用"
+  },
+  "tip_in_header": {
+    "message": "【被交流 $1】@$2 → あなた"
+  },
+  "tip_out_header": {
+    "message": "【自分交流 $1】あなた → @$2"
+  },
+  "tip_recent": {
+    "message": "最近：$1"
+  },
+  "tip_in_empty": {
+    "message": "  なし（通知の穏やか同期 / 自分の投稿を開く）"
+  },
+  "tip_out_empty": {
+    "message": "  なし（導入後の返信/いいね/リポスト/引用は即時；履歴はいいね/返信ページで手動同期）"
+  },
+  "tip_account": {
+    "message": "（アカウント @$1 · 端末のみ）"
+  },
+  "tip_part": {
+    "message": "$1 $2"
+  },
+  "tip_retweet_you": {
+    "message": "リポスト $1"
+  },
+  "tip_mention_you": {
+    "message": "メンション $1"
+  },
+  "toast_scan_blue": {
+    "message": "青未フォロー $1 / $2"
+  },
+  "toast_scan_oneway": {
+    "message": "未相互 $1 / $2"
+  },
+  "toast_scan_tweets": {
+    "message": "投稿をラベル $1"
+  },
+  "toast_selfcheck_miss": {
+    "message": "自己検査：DOM $1 · DB $2 · 欠 $3$4"
+  },
+  "toast_selfcheck_ok": {
+    "message": "自己検査：表示 $1 人はすべてDB内"
+  },
+  "toast_migrated": {
+    "message": "更新：被交流/自分交流の2ピル；タイムラインフォロー（popupで切替）"
+  },
+  "toast_open_notif": {
+    "message": "同期前に通知ページを開いてください"
+  },
+  "err_open_notif": {
+    "message": "先に x.com/notifications を開いてください"
+  },
+  "toast_open_ox": {
+    "message": "自分交流同期の前に「いいね」または「返信」を開いてください"
+  },
+  "err_open_ox": {
+    "message": "先に x.com/$1/likes または /with_replies を開いてください"
+  },
+  "err_open_ox_you": {
+    "message": "あなたのアカウント"
+  },
+  "toast_notif_batch": {
+    "message": "通知：今回 $1 件$2 · スキップ $3（累計 $4）$5"
+  },
+  "toast_notif_empty": {
+    "message": "通知：捕捉 $1，返信/いいね/引用なし（instr=$2）"
+  },
+  "toast_short_reply": {
+    "message": "返信$1"
+  },
+  "toast_short_thread": {
+    "message": "スレ$1"
+  },
+  "toast_short_quote": {
+    "message": "引用$1"
+  },
+  "toast_short_like": {
+    "message": "いいね$1"
+  },
+  "toast_short_rt": {
+    "message": "RP$1"
+  },
+  "toast_short_mention": {
+    "message": "言及$1"
+  },
+  "toast_follow_fail": {
+    "message": "フォロー失敗"
+  },
+  "toast_follow_ok": {
+    "message": "フォローしました"
+  },
+  "toast_ox_start": {
+    "message": "自分交流同期中…（約3秒/頁・最大10・離れない）"
+  },
+  "toast_ox_progress": {
+    "message": "自分交流…第 $1 頁 · 認識 $2"
+  },
+  "toast_ox_done": {
+    "message": "自分交流同期完了"
+  },
+  "toast_ox_error": {
+    "message": "自分交流同期停止：$1"
+  },
+  "toast_ox_skip": {
+    "message": "スキップしました"
+  },
+  "toast_sync_start": {
+    "message": "穏やか同期中…（約3秒/頁・最大15）"
+  },
+  "toast_sync_progress": {
+    "message": "穏やか同期…第 $1 頁 · イベント $2"
+  },
+  "toast_sync_done": {
+    "message": "穏やか同期完了 $1 頁 / $2 件"
+  },
+  "toast_sync_error": {
+    "message": "穏やか同期停止：$1"
+  },
+  "toast_sync_skip": {
+    "message": "同期をスキップ"
+  },
+  "toast_unknown_err": {
+    "message": "不明なエラー"
+  },
+  "inj_follow_too_fast": {
+    "message": "操作が早すぎます。約10秒後に再試行"
+  },
+  "inj_follow_rate": {
+    "message": "1分あたりフォロー上限 $1 回。少し待ってください"
+  },
+  "inj_bad_user": {
+    "message": "ユーザー名が無効です"
+  },
+  "inj_follow_self": {
+    "message": "自分はフォローできません"
+  },
+  "inj_already_following": {
+    "message": "フォロー中"
+  },
+  "inj_no_auth": {
+    "message": "ログイン状態未取得。更新して再試行"
+  },
+  "inj_rate_429": {
+    "message": "レート制限 (429)。後で再試行"
+  },
+  "inj_relogin": {
+    "message": "再ログインが必要です"
+  },
+  "inj_follow_ok": {
+    "message": "フォローしました"
+  },
+  "inj_follow_fail_status": {
+    "message": "フォロー失敗 ($1)"
+  },
+  "inj_ox_busy": {
+    "message": "同期が実行中です（同時に1つ）"
+  },
+  "inj_ox_need_page": {
+    "message": "先に自分の「いいね」または「返信」を開いてください（x.com/あなた/likes または /with_replies）"
+  },
+  "inj_ox_cooldown": {
+    "message": "直前に同期済み。制限回避のため約 $1 分待ってください"
+  },
+  "inj_ox_no_tpl": {
+    "message": "$1 リクエスト未取得。更新して再試行"
+  },
+  "inj_ox_no_headers": {
+    "message": "ヘッダー未取得。ページを更新してください"
+  },
+  "inj_ox_left": {
+    "message": "ページを離れたため中止"
+  },
+  "inj_ox_done_detail": {
+    "message": "$1（$2 $3 頁 / $4 件、重複除去済）"
+  },
+  "inj_err_429": {
+    "message": "429 制限：停止しました。しばらくして再試行"
+  },
+  "inj_err_auth": {
+    "message": "$1 未承認：ページを更新してください"
+  },
+  "inj_err_pull": {
+    "message": "取得失敗 $1"
+  },
+  "inj_sync_busy": {
+    "message": "穏やか同期が実行中です（同時に1つ）"
+  },
+  "inj_sync_notif_only": {
+    "message": "通知ページでのみ同期できます"
+  },
+  "inj_sync_cd_auto": {
+    "message": "30分以内に同期済。約 $1 分後に自動再取得（ページ読込の通知は記録継続）"
+  },
+  "inj_sync_cd_manual": {
+    "message": "直前に同期済。$1 秒後に穏やか同期を再実行"
+  },
+  "inj_sync_left_cancel": {
+    "message": "通知ページを離れたため同期キャンセル"
+  },
+  "inj_sync_no_headers": {
+    "message": "ヘッダー未準備。待つか通知を更新"
+  },
+  "inj_sync_aborted": {
+    "message": "通知を離れたため穏やか同期中止（$1 頁 / $2 件）"
+  },
+  "inj_sync_capped": {
+    "message": "穏やか同期完了：上限到達（$1 頁 / $2 件）。30分後に再可"
+  },
+  "inj_sync_done": {
+    "message": "穏やか同期完了（$1 頁 / $2 件）"
+  },
+  "inj_sync_empty": {
+    "message": "要求したが返信/引用/いいねを検出できず（報告時は popup キャプチャのスクショを）"
+  }
+}

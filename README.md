@@ -1,8 +1,8 @@
-# 诚信浇友 v1.7.2
+# 诚信浇友 v1.7.3
 
 > Honest Mutuals · X 关注与互动标注（原名「X 单向关注高亮」）
 
-Chrome / Edge（Chromium 111+）通用 Manifest V3 扩展。
+Chrome / Edge（Chromium 111+）通用 Manifest V3 扩展。界面文案跟随浏览器语言（中/英/日）。
 
 ## 打赏支持
 
@@ -119,6 +119,9 @@ accounts[我的handle] = {
 - 风险：过度同步 → **429**；登录失效 → **401**（toast 会提示）
 
 ## 版本
+
+### v1.7.3
+- UI 文案跟随浏览器语言：中文 / English / 日本語（`chrome.i18n`，`default_locale` 为 zh_CN）
 
 ### v1.7.2
 - 修复控制通道双重投递：content 只走 postMessage，关注/同步不再因二次执行被限速打回
