@@ -123,7 +123,7 @@
     "message": " · repost $1 · mention $2"
   },
   "dbg_entries": {
-    "message": "Entries: notif $1 / tweet $2 · instr $3$4"
+    "message": "Entries: notif $1 / tweet $2 · instr $3 $4"
   },
   "dbg_skip": {
     "message": "Skip: no node $1 · no type $2 · no user $3 · self $4"
@@ -327,7 +327,7 @@
     "message": "Labeled tweets $1"
   },
   "toast_selfcheck_miss": {
-    "message": "Check: DOM $1 · in DB $2 · miss $3$4"
+    "message": "Check: DOM $1 · in DB $2 · miss $3 $4"
   },
   "toast_selfcheck_ok": {
     "message": "Check: $1 visible users all in DB"
@@ -351,7 +351,7 @@
     "message": "you"
   },
   "toast_notif_batch": {
-    "message": "Notif: batch $1$2 · skip $3 (total $4)$5"
+    "message": "Notif: batch $1 $2 · skip $3 (total $4)$5"
   },
   "toast_notif_empty": {
     "message": "Notif: caught $1, no reply/like/quote (instr=$2)"

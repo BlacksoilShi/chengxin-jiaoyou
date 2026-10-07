@@ -1,4 +1,4 @@
-# 诚信浇友 v1.7.3
+# 诚信浇友 v1.7.4
 
 > Honest Mutuals · X 关注与互动标注（原名「X 单向关注高亮」）
 
@@ -120,7 +120,7 @@ accounts[我的handle] = {
 
 ## 版本
 
-### v1.7.3
+### v1.7.4
 - UI 文案跟随浏览器语言：中文 / English / 日本語（`chrome.i18n`，`default_locale` 为 zh_CN）
 
 ### v1.7.2

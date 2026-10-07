@@ -123,7 +123,7 @@
     "message": " · リポスト $1 · メンション $2"
   },
   "dbg_entries": {
-    "message": "件数：notif $1 / tweet $2 · instr $3$4"
+    "message": "件数：notif $1 / tweet $2 · instr $3 $4"
   },
   "dbg_skip": {
     "message": "スキップ：ノードなし $1 · 種別なし $2 · ユーザーなし $3 · 自分 $4"
@@ -327,7 +327,7 @@
     "message": "投稿をラベル $1"
   },
   "toast_selfcheck_miss": {
-    "message": "自己検査：DOM $1 · DB $2 · 欠 $3$4"
+    "message": "自己検査：DOM $1 · DB $2 · 欠 $3 $4"
   },
   "toast_selfcheck_ok": {
     "message": "自己検査：表示 $1 人はすべてDB内"

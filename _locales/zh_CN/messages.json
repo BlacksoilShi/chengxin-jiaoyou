@@ -123,7 +123,7 @@
     "message": " · 转帖 $1 · 提及 $2"
   },
   "dbg_entries": {
-    "message": "条目：notif $1 / tweet $2 · instr $3$4"
+    "message": "条目：notif $1 / tweet $2 · instr $3 $4"
   },
   "dbg_skip": {
     "message": "跳过：无节点 $1 · 无类型 $2 · 无用户 $3 · 自己 $4"
@@ -327,7 +327,7 @@
     "message": "已标注帖子 $1"
   },
   "toast_selfcheck_miss": {
-    "message": "自检：DOM 可见 $1 人 · 库中有 $2 · 缺 $3$4"
+    "message": "自检：DOM 可见 $1 人 · 库中有 $2 · 缺 $3 $4"
   },
   "toast_selfcheck_ok": {
     "message": "自检：本页可见 $1 人互动均已入库"
