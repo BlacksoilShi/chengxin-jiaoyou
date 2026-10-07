@@ -1,4 +1,4 @@
-// 诚信浇友（原 X 单向关注高亮）— 页面主世界（MAIN world）v1.7.1
+// 诚信浇友（原 X 单向关注高亮）— 页面主世界（MAIN world）v1.7.2
 // 1) 只读 hook 页面 GraphQL/REST 通知响应 + 单帖 TweetDetail（被动，不额外请求）
 // 2) 进入通知页时「温和同步」：2.5–4s 抖动/页，单次 ≤15 页或 ≤300 事件，30 分钟冷却
 // 3) 解析口径（1.5.1）：
@@ -16,7 +16,7 @@
   if (window.__xOnewayIxHooked) return;
   Object.defineProperty(window, '__xOnewayIxHooked', { value: true });
 
-  const VERSION = '1.7.1';
+  const VERSION = '1.7.2';
   const MSG_TAG = 'x-oneway-ix/v1';
   const OX_TAG = 'x-oneway-ox/v1';
   const FOLLOW_TAG = 'x-oneway-ix/follow';
@@ -1512,20 +1512,39 @@
   }
 
 
-  // control from content/bridge via postMessage
+  // control from content via postMessage（短窗去重，防止偶发双投）
+  const recentCtrlAt = new Map(); // key → ts
+  const CTRL_DEDUPE_MS = 800;
+  function ctrlOnce(cmd, username) {
+    const key = `${cmd}|${String(username || '').toLowerCase()}`;
+    const now = Date.now();
+    const last = recentCtrlAt.get(key) || 0;
+    if (now - last < CTRL_DEDUPE_MS) return false;
+    recentCtrlAt.set(key, now);
+    if (recentCtrlAt.size > 80) {
+      for (const [k, t] of recentCtrlAt) {
+        if (now - t > CTRL_DEDUPE_MS * 4) recentCtrlAt.delete(k);
+      }
+    }
+    return true;
+  }
+
   window.addEventListener('message', (ev) => {
     if (ev.source !== window || ev.origin !== location.origin) return;
     const d = ev.data;
     if (!d || d.__tag !== CTRL_TAG) return;
     if (d.cmd === 'sync-start') {
+      if (!ctrlOnce('sync-start', d.force ? 'force' : 'auto')) return;
       runAutoSync({ force: !!d.force, lastSyncAt: Number(d.lastSyncAt) || 0 });
     } else if (d.cmd === 'sync-stop') {
       stopAutoSync();
     } else if (d.cmd === 'ox-sync-start') {
+      if (!ctrlOnce('ox-sync-start', '')) return;
       runOutboundSync();
     } else if (d.cmd === 'ox-sync-stop') {
       oxState.stop = true;
     } else if (d.cmd === 'follow-create') {
+      if (!ctrlOnce('follow-create', d.username)) return;
       createFollow(d.username, d.userId);
     } else if (d.cmd === 'follow-query') {
       const users = {};

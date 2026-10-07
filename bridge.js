@@ -3,7 +3,6 @@
   const MSG_TAG = 'x-oneway-ix/v1';
   const DBG_TAG = 'x-oneway-ix/dbg';
   const SYNC_TAG = 'x-oneway-ix/sync';
-  const CTRL_TAG = 'x-oneway-ix/ctrl';
   const OX_TAG = 'x-oneway-ox/v1';
   const FOLLOW_TAG = 'x-oneway-ix/follow';
   const OX_ACTIONS = new Set(['reply', 'like', 'retweet', 'quote']);
@@ -286,9 +285,5 @@
     });
   } catch (_) {}
 
-  // expose ctrl helper for content via custom event
-  window.addEventListener('x-oneway-ix-ctrl', (ev) => {
-    const d = ev.detail || {};
-    window.postMessage({ __tag: CTRL_TAG, ...d }, location.origin);
-  });
+  // 1.7.2：content 只 postMessage 直达 inject，不再监听 x-oneway-ix-ctrl 二次转发
 })();

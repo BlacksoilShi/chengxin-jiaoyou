@@ -1,4 +1,4 @@
-# 诚信浇友 v1.7.1
+# 诚信浇友 v1.7.2
 
 > Honest Mutuals · X 关注与互动标注（原名「X 单向关注高亮」）
 
@@ -119,6 +119,14 @@ accounts[我的handle] = {
 - 风险：过度同步 → **429**；登录失效 → **401**（toast 会提示）
 
 ## 版本
+
+### v1.7.2
+- 修复控制通道双重投递：content 只走 postMessage，关注/同步不再因二次执行被限速打回
+- inject 对同 cmd+username 短窗去重
+- 关注列表按钮未就绪（unknown）不再误标「未回关」；扩展「已关注/Following」等文案识别
+- MutationObserver 仅在 UserCell/tweet/User-Name 相关变动时重扫
+- 蓝 V：无明确蓝色填充时不再默认判为蓝 V
+- Edge 上架文档版本对齐
 
 ### v1.6.1
 - 品牌更名为「诚信浇友」（Honest Mutuals），仅改名称与文案，功能同 1.6.0

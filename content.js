@@ -70,11 +70,19 @@
     const buttons = cell.querySelectorAll('button, div[role="button"]');
     for (const btn of buttons) {
       const raw = textOf(btn);
-      const label = `${btn.getAttribute('aria-label') || ''} ${raw}`;
-      if (/正在关注|following|取消关注|unfollow/i.test(label) && !/follow back|回关/i.test(label)) {
+      const aria = btn.getAttribute('aria-label') || '';
+      const label = `${aria} ${raw}`;
+      // 回关 / Follow back 优先视为未关注（可点回关）
+      if (/follow back|回关/i.test(label)) return 'not-following';
+      // 已关注态：精确匹配按钮文案，避免 Followings / following count 误伤
+      if (
+        /^(正在关注|已关注|Following|Unfollow|取消关注)$/i.test(raw) ||
+        /^(正在关注|已关注|Following|Unfollow|取消关注)\b/i.test(aria) ||
+        (/\bUnfollow\b|\b取消关注\b/i.test(label))
+      ) {
         return 'following';
       }
-      if (/follow back|回关/i.test(label) || FOLLOW_RE.test(raw) || /\bfollow @|关注 @/i.test(label)) {
+      if (FOLLOW_RE.test(raw) || /\bfollow @|关注 @/i.test(label) || /^(关注|Follow)$/i.test(raw)) {
         return 'not-following';
       }
     }
@@ -112,7 +120,8 @@
       }
       if (sawNonBlue) continue;
       if (sawBlue) return true;
-      return true;
+      // 有认证图标但无明确蓝色填充：不假定为蓝 V（金/灰/政府等已在上方过滤）
+      continue;
     }
 
     const name = cell.querySelector('[data-testid="User-Name"]');
@@ -465,10 +474,8 @@
       return null;
     }
 
+    // 仅在明确「正在关注」且对方未回关时标「未回关」；unknown 不标，等按钮文案就绪
     if (state === 'following' && !followsYou) return 'out';
-    if (isFollowingPage() && !followsYou && state !== 'not-following') {
-      if (state === 'following' || state === 'unknown') return 'out';
-    }
     return null;
   }
 
@@ -536,9 +543,53 @@
     scheduleThreadScan();
   }
 
+  function isOwnUiNode(node) {
+    if (!node || node.nodeType !== 1 || !node.classList) return false;
+    return node.classList.contains('x-oneway-badge') ||
+      node.classList.contains('x-oneway-ixwrap') ||
+      node.classList.contains('x-oneway-ix') ||
+      node.classList.contains('x-oneway-follow-btn') ||
+      node.classList.contains('x-oneway-toast') ||
+      node.classList.contains('x-oneway-highlight') ||
+      node.classList.contains('x-oneway-highlight-blue');
+  }
+
+  function mutationNodeRelevant(node) {
+    if (!node || node.nodeType !== 1) return false;
+    if (isOwnUiNode(node)) return false;
+    if (node.matches?.('[data-testid="UserCell"], article[data-testid="tweet"], [data-testid="User-Name"]')) {
+      return true;
+    }
+    if (node.querySelector?.('[data-testid="UserCell"], article[data-testid="tweet"], [data-testid="User-Name"]')) {
+      return true;
+    }
+    // 关注按钮文案等在 UserCell/tweet 内局部变动
+    if (node.closest?.('[data-testid="UserCell"], article[data-testid="tweet"], [data-testid="User-Name"]')) {
+      return true;
+    }
+    return false;
+  }
+
+  function mutationsRelevant(mutations) {
+    for (const m of mutations) {
+      if (m.type !== 'childList') continue;
+      for (const node of m.addedNodes) {
+        if (mutationNodeRelevant(node)) return true;
+      }
+      for (const node of m.removedNodes) {
+        if (mutationNodeRelevant(node)) return true;
+      }
+      if (mutationNodeRelevant(m.target)) return true;
+    }
+    return false;
+  }
+
   function startObserver() {
     if (observer) observer.disconnect();
-    observer = new MutationObserver(() => scheduleScan());
+    observer = new MutationObserver((mutations) => {
+      if (!mutationsRelevant(mutations)) return;
+      scheduleScan();
+    });
     const root = document.body || document.documentElement;
     observer.observe(root, { childList: true, subtree: true });
   }
@@ -673,9 +724,9 @@
   }
 
   // ---- auto sync control ----
+  // 只走 postMessage → inject（MAIN）。勿再 dispatchEvent：bridge 会二次转发导致 follow/sync 执行两遍
   function postCtrl(detail) {
     try {
-      window.dispatchEvent(new CustomEvent('x-oneway-ix-ctrl', { detail }));
       window.postMessage({ __tag: CTRL_TAG, ...detail }, location.origin);
     } catch (_) {}
   }

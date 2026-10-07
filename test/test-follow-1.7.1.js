@@ -1,4 +1,4 @@
-// NODE_PATH=<jsdom> node test/test-follow-1.7.1.js — 时间线一键关注：unknown/false 显示，true 隐藏，页面其它按钮不影响
+// NODE_PATH=<jsdom> node test/test-follow-1.7.1.js — 时间线一键关注：unknown/false 显示，true 隐藏，页面其它按钮不影响（1.7.2 仍适用，逻辑未改）
 const { JSDOM } = require('jsdom'); const fs = require('fs'); const assert = require('assert');
 // 故意塞入会误伤旧逻辑的按钮：aria-label 含 following / Follow @ / 回关 / 正在关注
 const noise = `<div role="group"><button aria-label="12 replies. Reply">r</button><button aria-label="Followings timeline">x</button><button aria-label="Follow @someone">关注</button><button>回关</button><button>正在关注</button></div>`;

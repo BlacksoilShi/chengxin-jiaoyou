@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "诚信浇友",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "诚信浇友 · X 关注与互动标注：高亮未回关、蓝V待回关；本地「被互动 / 我互动」；时间线可一键关注（仅点击时），不自动批量关注。",
   "icons": {
     "16": "icons/icon16.png",
