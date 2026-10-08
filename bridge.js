@@ -6,14 +6,36 @@
   const OX_TAG = 'x-oneway-ox/v1';
   const FOLLOW_TAG = 'x-oneway-ix/follow';
   const OX_ACTIONS = new Set(['reply', 'like', 'retweet', 'quote']);
+  const T_FALLBACKS = {
+    act_out_reply: '我回复',
+    act_out_like: '我点赞',
+    act_out_retweet: '我转帖',
+    act_out_quote: '我引用'
+  };
+  function applySubs(template, substitutions) {
+    if (!template) return '';
+    if (substitutions == null) return template;
+    const arr = Array.isArray(substitutions) ? substitutions : [substitutions];
+    return template.replace(/\$([1-9])/g, (_, d) => {
+      const i = Number(d) - 1;
+      return i >= 0 && i < arr.length ? String(arr[i] ?? '') : '';
+    });
+  }
   function t(key, substitutions) {
     try {
-      const msg = chrome.i18n.getMessage(key, substitutions == null ? undefined : substitutions);
-      return msg || key;
-    } catch (_) {
-      return key;
-    }
+      const bare = chrome.i18n.getMessage(key);
+      if (bare) return applySubs(bare, substitutions);
+      const withSub = chrome.i18n.getMessage(
+        key,
+        substitutions == null ? undefined : substitutions
+      );
+      if (withSub) return withSub;
+    } catch (_) {}
+    const fb = T_FALLBACKS[key];
+    if (fb) return applySubs(fb, substitutions);
+    return key;
   }
+
   function OX_LABEL() {
     return {
       reply: t('act_out_reply'),

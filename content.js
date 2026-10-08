@@ -3,14 +3,68 @@
   const FOLLOW_RE = /^(follow|follow back|回关|关注)$/i;
   const CTRL_TAG = 'x-oneway-ix/ctrl';
 
+  // 中文兜底：getMessage 失败或带 substitutions 在部分 Chromium/Edge 返回 "" 时不露出原始 key
+  const T_FALLBACKS = {
+    pill_in: '被互动 $1',
+    pill_in_short: '被 $1',
+    pill_out: '我互动 $1',
+    pill_out_short: '我 $1',
+    pill_none: '暂无互动',
+    pill_none_short: '暂无',
+    pill_in_none: '被·暂无',
+    pill_out_none: '我·暂无',
+    badge_oneway: '未回关',
+    badge_blue: '蓝V待回关',
+    btn_follow: '关注',
+    btn_following: '已关注',
+    btn_follow_title: '关注 @$1（诚信浇友 · 仅你点击时关注）',
+    btn_follow_title_short: '关注 @$1',
+    tip_in_header: '【被互动 $1】@$2 对你',
+    tip_out_header: '【我互动 $1】你对 @$2',
+    tip_part: '$1 $2',
+    tip_recent: '最近：$1',
+    tip_in_empty: '  暂无（进通知页温和同步 / 打开你的帖子累计）',
+    tip_out_empty: '  暂无（安装后你回复/点赞/转帖/引用会实时记；历史可在你的喜欢/回复页手动同步）',
+    tip_account: '（账号 @$1 · 仅本机累计）',
+    tip_retweet_you: '转帖你 $1',
+    tip_mention_you: '提及你 $1',
+    act_reply: '评你的帖',
+    act_thread_reply: '回你的楼',
+    act_quote: '引用你',
+    act_like: '点赞你',
+    act_out_reply: '我回复',
+    act_out_like: '我点赞',
+    act_out_retweet: '我转帖',
+    act_out_quote: '我引用',
+    extVersionLabel: 'v$1'
+  };
+
+  function applySubs(template, substitutions) {
+    if (!template) return '';
+    if (substitutions == null) return template;
+    const arr = Array.isArray(substitutions) ? substitutions : [substitutions];
+    return template.replace(/\$([1-9])/g, (_, d) => {
+      const i = Number(d) - 1;
+      return i >= 0 && i < arr.length ? String(arr[i] ?? '') : '';
+    });
+  }
+
   function t(key, substitutions) {
     try {
-      const msg = chrome.i18n.getMessage(key, substitutions == null ? undefined : substitutions);
-      return msg || key;
-    } catch (_) {
-      return key;
-    }
+      // 先裸取再手动替换：$N 带 substitutions 时部分 Edge/Chrome 会返回空串
+      const bare = chrome.i18n.getMessage(key);
+      if (bare) return applySubs(bare, substitutions);
+      const withSub = chrome.i18n.getMessage(
+        key,
+        substitutions == null ? undefined : substitutions
+      );
+      if (withSub) return withSub;
+    } catch (_) {}
+    const fb = T_FALLBACKS[key];
+    if (fb) return applySubs(fb, substitutions);
+    return key;
   }
+
 
   // MAIN-world inject 无 chrome.i18n：把 UI 文案包经 postMessage 下发
   const INJECT_I18N_KEYS = [
