@@ -1,6 +1,6 @@
-# 诚信浇友 · Edge Add-ons 上架步骤（v1.7.6）
+# 诚信浇友 · Edge Add-ons 上架步骤（v1.7.7）
 
-上传包：`dist/诚信浇友-edge-1.7.6.zip`（manifest.json 在 zip 根目录，直接传，不要再套一层文件夹）
+上传包：`dist/诚信浇友-edge-1.7.7.zip`（manifest.json 在 zip 根目录，直接传，不要再套一层文件夹）
 
 ## 1. 注册开发者（通常免费）
 1. 打开 Partner Center：<https://partner.microsoft.com/dashboard>
@@ -11,7 +11,7 @@
 Partner Center → Microsoft Edge → **Overview** → **Create new extension**
 
 ## 3. 上传包（Packages）
-- 拖入 `诚信浇友-edge-1.7.6.zip`，等待校验通过
+- 拖入 `诚信浇友-edge-1.7.7.zip`，等待校验通过
 - 校验会读 manifest 的 name / version / 权限；以后更新必须 **version 比上次大**
 
 ## 4. 可用性（Availability）

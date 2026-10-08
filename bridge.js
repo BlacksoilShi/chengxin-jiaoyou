@@ -12,24 +12,46 @@
     act_out_retweet: '我转帖',
     act_out_quote: '我引用'
   };
+
   function applySubs(template, substitutions) {
     if (!template) return '';
     if (substitutions == null) return template;
     const arr = Array.isArray(substitutions) ? substitutions : [substitutions];
-    return template.replace(/\$([1-9])/g, (_, d) => {
-      const i = Number(d) - 1;
-      return i >= 0 && i < arr.length ? String(arr[i] ?? '') : '';
+    let msg = String(template);
+    for (let i = 0; i < arr.length; i++) {
+      const n = String(i + 1);
+      const val = String(arr[i] ?? '');
+      msg = msg.replace(new RegExp('\\$' + n + '\\$', 'g'), val);
+      msg = msg.replace(new RegExp('\\$' + n + '(?!\\d)', 'g'), val);
+    }
+    return msg;
+  }
+
+  function subsLanded(text, substitutions) {
+    if (substitutions == null) return true;
+    const arr = Array.isArray(substitutions) ? substitutions : [substitutions];
+    return arr.every((s) => {
+      if (s == null || String(s) === '') return true;
+      return String(text).includes(String(s));
     });
   }
+
   function t(key, substitutions) {
     try {
-      const bare = chrome.i18n.getMessage(key);
-      if (bare) return applySubs(bare, substitutions);
-      const withSub = chrome.i18n.getMessage(
-        key,
-        substitutions == null ? undefined : substitutions
-      );
-      if (withSub) return withSub;
+      if (substitutions != null) {
+        // 优先官方带参替换；部分 Edge/Chrome 会返回 ""
+        const withSub = chrome.i18n.getMessage(key, substitutions);
+        if (withSub && subsLanded(withSub, substitutions)) return withSub;
+        // 勿先裸取：无参 getMessage 会把未提供的 $1 吃成空，只剩「被」「我」
+        const fb = T_FALLBACKS[key];
+        if (fb) return applySubs(fb, substitutions);
+        const bare = chrome.i18n.getMessage(key);
+        if (bare && /\$[1-9]\$?/.test(bare)) return applySubs(bare, substitutions);
+        if (withSub) return withSub;
+      } else {
+        const bare = chrome.i18n.getMessage(key);
+        if (bare) return bare;
+      }
     } catch (_) {}
     const fb = T_FALLBACKS[key];
     if (fb) return applySubs(fb, substitutions);
