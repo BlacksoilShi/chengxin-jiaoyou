@@ -115,6 +115,29 @@
     return 'unknown';
   }
 
+  function isNonBlueBadgeColor(cssColor) {
+    const m = String(cssColor || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if (!m) return false;
+    const r = +m[1], g = +m[2], b = +m[3];
+    // 金 / 黄
+    if (r > 180 && g > 140 && b < 120) return true;
+    // 绿（企业等）
+    if (g > 150 && r < 100 && b < 150) return true;
+    // 灰
+    if (Math.abs(r - g) < 25 && Math.abs(g - b) < 25 && r >= 100 && r <= 190) return true;
+    return false;
+  }
+
+  function isBlueBadgeColor(cssColor) {
+    const s = String(cssColor || '').toLowerCase().replace(/\s+/g, '');
+    if (s.includes('1d9bf0') || s.includes('rgb(29,155,240)')) return true;
+    const m = String(cssColor || '').match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if (!m) return false;
+    const r = +m[1], g = +m[2], b = +m[3];
+    // X 蓝勾常见 rgb(29,155,240)；放宽一点兼容主题
+    return b >= 180 && b > r && g >= 100 && g <= 210;
+  }
+
   function cellIsBlueVerified(cell) {
     const icons = cell.querySelectorAll(
       '[data-testid="icon-verified"], svg[data-testid="icon-verified"], svg[aria-label*="Verified" i], svg[aria-label*="认证" i], svg[aria-label*="已认证" i]'
@@ -146,17 +169,25 @@
       }
       if (sawNonBlue) continue;
       if (sawBlue) return true;
-      // 有认证图标但无明确蓝色填充：不假定为蓝 V（金/灰/政府等已在上方过滤）
-      continue;
+
+      // X 官方蓝勾多数 path 用 fill=currentColor，蓝色在 CSS color 上；
+      // 1.7.2 要求「显式蓝填充」会漏掉这类图标。用计算色排除金/灰/绿后仍按蓝 V。
+      try {
+        const color = getComputedStyle(svg).color || '';
+        if (isNonBlueBadgeColor(color)) continue;
+        if (isBlueBadgeColor(color)) return true;
+      } catch (_) {}
+      return true;
     }
 
-    const name = cell.querySelector('[data-testid="User-Name"]');
-    if (name) {
-      for (const n of name.querySelectorAll('[aria-label]')) {
-        const a = n.getAttribute('aria-label') || '';
-        if (/verified|已认证|认证账号/i.test(a) && !/government|政府|business|企业|组织/i.test(a)) {
-          return true;
-        }
+    // 兜底：不限 User-Name（部分 UserCell 结构差异）；放宽中文「认证」匹配
+    for (const n of cell.querySelectorAll('[aria-label]')) {
+      const a = n.getAttribute('aria-label') || '';
+      if (
+        /verified|已认证|认证账号|认证/i.test(a) &&
+        !/government|政府|business|企业|组织|organization|gold|金牌/i.test(a)
+      ) {
+        return true;
       }
     }
     return false;
